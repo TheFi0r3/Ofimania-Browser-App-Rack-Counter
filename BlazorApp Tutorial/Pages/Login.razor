@@ -1,0 +1,65 @@
+﻿@page "/login"
+@inject NavigationManager NavigationManager;
+@using BlazorApp_Tutorial.Data;
+
+<PageTitle>Log In</PageTitle>
+
+<h1>Welcome!</h1>
+<br>
+<p>Please click the button for login in:</p>
+<br>
+<div class="col-12 row">
+   
+    <h2>Enter Your Login Information</h2>
+    <br>
+
+     <EditForm Model= "@loginForm">
+
+         <div class="col-12 row">
+             <label class="col-2 font-weight-bold">Nombre de Usuario</label>
+             <InputText class="form-control col-3" @bind-Value="loginForm.UserNameId" placeholder="Nombre de Usuario" />
+         </div>
+         <br/>
+         <div class="col-12 row">
+             <label class="col-2 font-weight-bold">Contraseña</label>
+            <InputText class="form-control col-3" @bind-Value="loginForm.UserPassword" placeholder="Contraseña" />
+         </div>
+        <br />
+
+     </EditForm>
+
+</div>
+
+<button class="btn btn-primary" @onclick="LoginSybase">Log Me In</button>
+
+@code {
+
+    private int currentCount = 0;
+    private int loginDetails = 0;
+
+    public LoginForms loginForm { get; set; }
+
+    protected override void OnInitialized()
+    {
+        loginForm = new LoginForms();
+    }
+
+    private void LoginSybase()
+    {
+        // DB Connection
+        loginDetails = 1;
+        //
+
+        if (loginDetails != 0)
+        {
+            NavigationManager.NavigateTo("/welcomescreen");
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/loginerror");
+        }
+
+        currentCount++;
+    }
+
+}

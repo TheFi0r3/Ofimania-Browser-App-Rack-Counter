@@ -1,0 +1,17 @@
+﻿@page "/welcomescreen"
+@inject NavigationManager NavigationManager
+
+<h1>Main Menu</h1>
+<br>
+<p>Welcome to the Main Menu!</p>
+
+<button class="btn btn-primary" @onclick="CloseSession">Log Out</button>
+
+@code {
+
+    private void CloseSession()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+}

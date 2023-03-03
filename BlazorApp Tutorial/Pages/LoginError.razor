@@ -1,0 +1,17 @@
+﻿@page "/loginerror"
+@inject NavigationManager NavigationManager
+
+<h1>Error!</h1>
+<br>
+<p>Your Credentials are Invalid</p>
+
+<button class="btn btn-primary" @onclick="CloseSession">Return</button>
+
+@code {
+
+    private void CloseSession()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+
+}
