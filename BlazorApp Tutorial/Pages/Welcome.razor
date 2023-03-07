@@ -1,13 +1,23 @@
-﻿@page "/welcomescreen"
+﻿@page "/administrator"
 @inject NavigationManager NavigationManager
 
 <h1>Main Menu</h1>
 <br>
 <p>Welcome to the Main Menu!</p>
+<br>
+<p>Please select a rack to star cataloging</p>
+
+<button class="btn btn-primary" @onclick="RackSorting">Rack</button>
 
 <button class="btn btn-primary" @onclick="CloseSession">Log Out</button>
 
+
 @code {
+
+    private void RackSorting()
+    {
+        NavigationManager.NavigateTo("/administrator/rack/rack1");
+    }
 
     private void CloseSession()
     {

@@ -1,0 +1,46 @@
+﻿@page "/administrator/rack/{rackId}"
+@page "/administrator/rack"
+
+@inject NavigationManager NavigationManager
+
+@using BlazorApp_Tutorial.Data
+
+
+<h3>Rack Number @RackId: </h3>
+
+<div class="col-12 row">
+
+     <EditForm Model= "@itemsTable">
+
+         <div class="col-15 row">
+             <label class="font-weight-bold">Nombre de Usuario</label>
+            <InputText class="form-control col-12" @bind-Value="itemsTable.ItemCode" placeholder="Codigo de Producto" />
+         </div>
+         <br/>
+
+     </EditForm>
+
+</div>
+
+<button class="btn btn-primary" @onclick="Submission">Submit</button>
+<button class="btn btn-primary" @onclick="Submission">Clear</button>
+
+
+@code {
+
+    [Parameter]
+    public string RackId { get; set; }
+
+    public ItemsTable itemsTable { get; set; }
+
+    protected override void OnInitialized()
+    {
+        itemsTable = new ItemsTable();
+    }
+
+    private void Submission()
+    {
+        // DB Connection
+
+    }
+}
