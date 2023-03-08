@@ -11,6 +11,10 @@ namespace BlazorApp_Tutorial.Data
     {
         public string ItemCode { get; set; }
 
+        public string ItemName { get; set; }
+
+        public int ItemNumb { get; set; }
+
         public ItemsTable() { }
 
     }
