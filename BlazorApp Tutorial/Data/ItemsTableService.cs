@@ -6,7 +6,7 @@
 {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
-        public Task<ItemsTable[]> GetTableAsync(int itemCode)
+        public Task<ItemsTable[]> GetTableAsync()
         {
             return Task.FromResult(Enumerable.Range(1, 5).Select(index => new ItemsTable
             {

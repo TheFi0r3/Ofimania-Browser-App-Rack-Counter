@@ -1,10 +1,10 @@
 ﻿@page "/administrator/rack/{rackId}"
 @page "/administrator/rack"
 
-@inject NavigationManager NavigationManager
-
 @using BlazorApp_Tutorial.Data
 
+@inject NavigationManager NavigationManager
+@inject ItemsTableService RackService
 
 <h3>Rack Number @RackId: </h3>
 
@@ -25,6 +25,32 @@
 <button class="btn btn-primary" @onclick="Submission">Submit</button>
 <button class="btn btn-primary" @onclick="Submission">Clear</button>
 
+@if (rackItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name of Item</th>
+                <th>Code of Item</th>
+                <th>Number of Items</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rackItem in rackItems)
+            {
+                <tr>
+                    <td>@rackItem.ItemName</td>
+                    <td>@rackItem.ItemCode</td>
+                    <td>@rackItem.ItemNumb</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
 
@@ -32,6 +58,8 @@
     public string RackId { get; set; }
 
     public ItemsTable itemsTable { get; set; }
+
+   private ItemsTable[]? rackItems;
 
     protected override void OnInitialized()
     {
@@ -42,5 +70,10 @@
     {
         // DB Connection
 
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        rackItems = await RackService.GetTableAsync();
     }
 }
