@@ -4,22 +4,22 @@
 @using BlazorApp_Tutorial.Data
 
 @inject NavigationManager NavigationManager
-@inject ItemsTableService RackService
+@inject ItemsRackService RackService
 
 <h3>Rack Number @RackId: </h3>
 
 <div class="col-12 row">
 
-     <EditForm Model= "@itemsTable">
+    <EditForm Model="@itemsRack">
 
          <div class="col-12 row">
             <label class="col-2 font-weight-bold">Codigo de Producto</label>
-            <InputText class="form-control col-3" @bind-Value="itemsTable.ItemCode" placeholder="Codigo de Producto" />
+            <InputText class="form-control col-3" @bind-Value="itemsRack.ItemCode" placeholder="Codigo de Producto" />
          </div>
          <br />
          <div class="col-12 row">
             <label class="col-2 font-weight-bold">Numero de Productos</label>
-            <InputNumber class="form-control col-3" @bind-Value="itemsTable.ItemNumb" placeholder="Numero de Productos" />
+            <InputNumber class="form-control col-3" @bind-Value="itemsRack.ItemNumb" placeholder="Numero de Productos" />
          </div>
          <br />
          <div class="col-12 row">
@@ -69,13 +69,13 @@ else
     [Parameter]
     public string RackId { get; set; }
 
-    public ItemsTable itemsTable { get; set; }
+    public ItemsRack itemsRack { get; set; }
 
-    private ItemsTable[]? rackItems;
+    private ItemsRack[]? rackItems;
 
     protected override void OnInitialized()
     {
-        itemsTable = new ItemsTable();
+        itemsRack = new ItemsRack();
     }
 
     private void Submission()
@@ -86,7 +86,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        rackItems = await RackService.GetTableAsync();
+        rackItems = await RackService.GetRackAsync();
     }
 
     private void SaveRackEntry()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BlazorApp_Tutorial.Data
 {
-    public class ItemsTable
+    public class ItemsRack      
     {
         public string ItemCode { get; set; }
 
@@ -15,7 +15,7 @@ namespace BlazorApp_Tutorial.Data
 
         public int ItemNumb { get; set; }
 
-        public ItemsTable() { }
+        public ItemsRack() { }
 
     }
 }

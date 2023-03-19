@@ -7,16 +7,40 @@
 <br>
 <p>Please select a rack to star cataloging</p>
 
-<button class="btn btn-primary" @onclick="RackSorting">Rack</button>
+@if (racks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (string rack in racks)
+    {
+        <button class="btn btn-primary" @onclick="() => RackSorting(rack)">Rack @rack</button>
+        <span>&nbsp;</span>
+        <br>
+        <br>
+    }
+}
+
+<button class="btn btn-primary" @onclick="() => RackSorting()">Rack</button>
 
 <button class="btn btn-primary" @onclick="CloseSession">Log Out</button>
 
 
 @code {
 
+    private static readonly string[] racks = new[]
+    {
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    };
+
+    private void RackSorting(string rack)
+    {
+        NavigationManager.NavigateTo("/administrator/rack/" + @rack);
+    }
     private void RackSorting()
     {
-        NavigationManager.NavigateTo("/administrator/rack/rack1");
+        NavigationManager.NavigateTo("/administrator/rack/rack0");
     }
 
     private void CloseSession()
@@ -25,3 +49,4 @@
     }
 
 }
+
