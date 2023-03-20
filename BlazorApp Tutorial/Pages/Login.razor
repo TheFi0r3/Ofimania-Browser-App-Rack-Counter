@@ -1,36 +1,38 @@
 ﻿@page "/login"
+@layout LoginLayout
 @inject NavigationManager NavigationManager;
 @using BlazorApp_Tutorial.Data;
 
 <PageTitle>Log In</PageTitle>
 
-<h1>Welcome!</h1>
-<br>
-<p>Please click the button for login in:</p>
-<br>
+<h1 style="font-weight:bold; color:blue">¡Bienvenido!</h1><br />
+<label class="col-12 font-weight-bold">Hoy es: @DateTime.Now</label>
+<br />
+<br />
+
 <div class="col-12 row">
    
-    <h2>Enter Your Login Information</h2>
-    <br>
+    <h4 style="font-weight:lighter; color:black">Coloque sus datos de usuario:</h4><br>
 
-     <EditForm Model= "@loginForm">
+    <EditForm Model="@loginForm" OnValidSubmit="@LoginSybase">
 
-         <div class="col-12 row">
-            <label class="col-2 font-weight-bold">Nombre de Usuario</label>
-             <InputText class="form-control col-3" @bind-Value="loginForm.UserNameId" placeholder="Nombre de Usuario" />
-         </div>
-         <br/>
-         <div class="col-12 row">
-            <label class="col-2 font-weight-bold">Contraseña</label>
+        <div class="col-12 row">
+            <label class="col-12 font-weight-bold" style="text-align:left">Nombre de Usuario</label>
+            <InputText class="form-control col-3" @bind-Value="loginForm.UserNameId" placeholder="Nombre de Usuario" />
+        </div>
+        <br/>
+        <div class="col-12 row">
+            <label class="col-12 font-weight-bold" style="text-align:left">Contraseña</label>
             <InputText class="form-control col-3" @bind-Value="loginForm.UserPassword" placeholder="Contraseña" />
-         </div>
+        </div>
+        <br /><br />
+        <div class="col-6 row">
+            <span class="col-6 row"></span>
+            <input type="submit" class="form-control btn btn-primary" value="Log Me In" />
+        </div>
         <br />
-
-     </EditForm>
-
+    </EditForm>
 </div>
-
-<button class="btn btn-primary" @onclick="LoginSybase">Log Me In</button>
 
 @code {
 

@@ -1,4 +1,26 @@
 ﻿@page "/"
+@layout LoginLayout
+@inject NavigationManager NavigationManager;
+
+<PageTitle>Index</PageTitle>
+
+<h1 style="font-weight:bold; color:blue">¡Bienvenido!</h1>
+<div>
+    <br /><br /><br />
+    <div class="col-4 row">
+        <button class="btn btn-primary" @onclick="StartUpSybase">Iniciar</button>
+    </div>
+</div>
+
+@code {
+    private void StartUpSybase()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}
+
+@*
+@page "/"
 
 <PageTitle>Index</PageTitle>
 
@@ -7,3 +29,4 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+*@

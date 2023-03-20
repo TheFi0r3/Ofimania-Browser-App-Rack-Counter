@@ -1,11 +1,22 @@
 ﻿@page "/loginerror"
+@layout LoginLayout
 @inject NavigationManager NavigationManager
 
-<h1>Error!</h1>
-<br>
-<p>Your Credentials are Invalid</p>
+<h1 style="font-weight:bold; color:blue">¡Bienvenido!</h1>
+<br />
+<label class="col-12 font-weight-bold">Hoy es: @DateTime.Now</label>
+<br />
+<br />
 
-<button class="btn btn-primary" @onclick="CloseSession">Return</button>
+<div class="col-12 row">
+
+    <h4 style="font-weight:lighter; color:black">¡Error!: Sus credenciales son invalidas</h4><br>
+        <br /><br /><br />
+</div>
+
+<div class="col-4 ">
+    <button class="btn btn-primary" @onclick="CloseSession">Regresar</button>
+</div>
 
 @code {
 
@@ -13,5 +24,4 @@
     {
         NavigationManager.NavigateTo("/login");
     }
-
 }
