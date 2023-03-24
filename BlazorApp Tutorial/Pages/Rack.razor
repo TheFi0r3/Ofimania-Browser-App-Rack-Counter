@@ -2,41 +2,84 @@
 @page "/administrator/rack"
 @using BlazorApp_Tutorial.Data
 @inject NavigationManager NavigationManager
-@inject ItemsRackService RackService
+@inject ItemRackService RackService
+@inject ItemCountService CountService
 
 <h3>Rack Number @RackId: </h3>
 
 <div class="col-12">
 
-    <EditForm Model="@itemsRack" OnValidSubmit="@Submission">
+    <EditForm Model="@itemCount" OnValidSubmit="@SubmitItem">
 
         <div class="col-12 row">
-            <label class="col-2 font-weight-bold">Codigo de Producto</label>
-            <InputText class="form-control col-5" @bind-Value="itemsRack.ItemCode" placeholder="Codigo de Producto" />
+            <label class="col-12 font-weight-bold">Codigo de Producto</label>
+            <InputNumber class="form-control col-5" @bind-Value="itemCount.ItemCode" placeholder="Codigo de Producto" />
         </div>
         <br />
         <div class="col-12 row">
-            <label class="col-2 font-weight-bold">Numero de Productos</label>
-            <InputNumber class="form-control col-5" @bind-Value="itemsRack.ItemNumb" placeholder="Numero de Productos" />
+            <label class="col-12 font-weight-bold">Nombre de Producto</label>
+            <InputText class="form-control col-5" @bind-Value="itemCount.ItemName" placeholder="Codigo de Producto" />
+        </div>
+        <br />
+        <div class="col-12 row">
+            <label class="col-12 font-weight-bold">Numero de Productos</label>
+            <InputNumber class="form-control col-5" @bind-Value="itemCount.ItemNumb" placeholder="Numero de Productos" />
         </div>
         <br />
         <div class="col-8 row">
             <span class="col-6 row">
-                <input type="submit" class="form-control col-1 btn btn-primary" value="Save" />
+                <input type="submit" class="form-control col-1 btn btn-primary" value="Añadir" />
                 <span>&nbsp;</span>
-                <input type="submit" class="form-control col-1 btn btn-primary" value="Clear" />
+                <button class="btn btn-primary" @onclick="ClearForm">Eliminar</button>
+                <span>&nbsp;</span>
+                <button class="btn btn-primary" @onclick="FinishCount">Finalizar</button>
+                <span>&nbsp;</span>
+                <button class="btn btn-primary" @onclick="ShowHideRack">Mostar/Ocultar Tabla</button>
+                <span>&nbsp;</span>
             </span>
-         </div>
+        </div>
 
-     </EditForm>
+    </EditForm>
+    <div class="col-8 row">
+        <span class="col-6 row">
+
+        </span>
+    </div>
 
 </div>
 
 
+
 <!--...  <button class="btn btn-primary" @onclick="Submission">Submit</button>
 <button class="btn btn-primary" @onclick="Submission">Clear</button>-->
+@if (itemsRack == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (showHide == true)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name of Item</th>
+                <th>Code of Item</th>
+                <th>Number of Items</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rackItem in itemsRack)
+            {
+                <tr>
+                    <td>@rackItem.ItemName</td>
+                    <td>@rackItem.ItemCode</td>
+                    <td>@rackItem.ItemNumb</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
-@if (rackItems == null)
+@if (itemsRack == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -51,7 +94,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var rackItem in rackItems)
+            @foreach (var rackItem in itemsCount)
             {
                 <tr>
                     <td>@rackItem.ItemName</td>
@@ -63,28 +106,59 @@ else
     </table>
 }
 
+
 @code {
 
     [Parameter]
     public string RackId { get; set; }
+    private bool showHide { get; set; }
 
-    public ItemsRack itemsRack { get; set; }
+    public ItemRack itemRack { get; set; }
+    public List<ItemRack> itemsRack { get; set; }
 
-    private ItemsRack[]? rackItems;
+    public ItemRack itemCount { get; set; }
+    public List<ItemRack> itemsCount { get; set; }
 
     protected override void OnInitialized()
     {
-        itemsRack = new ItemsRack();
-    }
-
-    private void Submission()
-    {
-        // DB Connection
+        showHide = false;
+        itemRack = new ItemRack();
+        itemCount = new ItemRack();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        rackItems = await RackService.GetRackAsync();
+        showHide = false;
+        itemsRack = await RackService.GetItemsRack();
+        itemsCount = await CountService.GetItemsRack();
+
+    }
+
+
+    private void SubmitItem()
+    {
+        // DB Connection
+        CountService.SaveItemRack(itemCount);
+        itemRack = new ItemRack();
+        itemCount = new ItemRack();
+    }
+    private void ClearForm()
+    {
+        itemRack = new ItemRack();
+        itemCount = new ItemRack();
+    }
+
+    private void FinishCount()
+    {
+        //SEND TO DB
+        NavigationManager.NavigateTo("/administrator");
+
+    }
+
+    private void ShowHideRack()
+    {
+        if(showHide == false){ showHide = true; }else{showHide = false;}
+
     }
 
 }

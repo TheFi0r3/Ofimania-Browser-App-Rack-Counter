@@ -1,11 +1,13 @@
 ﻿@page "/administrator"
+@using BlazorApp_Tutorial.Data
 @inject NavigationManager NavigationManager
+@inject RackStockService StockService
 
 <h1>Main Menu</h1>
 <br>
-<p>Welcome to the Main Menu!</p>
+<p>¡Bienvenido @UserName, al Menu Principal!</p>
 <br>
-<p>Please select a rack to start cataloging</p>
+<p>Seleccione un Rack para Empezar a Catalogar</p>
 
 @if (racks == null)
 {
@@ -13,18 +15,17 @@
 }
 else
 {
-    @foreach (string rack in racks)
+    @foreach (var rackStock in rackStocks)
     {
-        <button class="btn btn-primary" @onclick="() => RackSorting(rack)">Rack @rack</button>
+        <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
         <span>&nbsp;</span>
         <br>
         <br>
     }
 }
 
-<button class="btn btn-primary" @onclick="() => RackSorting()">Rack</button>
-
-<button class="btn btn-primary" @onclick="CloseSession">Log Out</button>
+@*<button class="btn btn-primary" @onclick="() => RackSorting()">Rack</button>
+<button class="btn btn-primary" @onclick="CloseSession">Log Out</button>*@
 
 
 @code {
@@ -34,6 +35,26 @@ else
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
+    [Parameter]
+    public string UserId { get; set; }
+    public string UserName { get; set; }
+
+    public RackStock rackStock { get; set; }
+    public List<RackStock> rackStocks { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        UserId = "Antonio Andres";
+        UserName = "Antonio Andres";
+        rackStock = new RackStock();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        rackStocks = await StockService.GetRackStocks();
+    }
+
     private void RackSorting(string rack)
     {
         NavigationManager.NavigateTo("/administrator/rack/" + @rack);
@@ -42,7 +63,6 @@ else
     {
         NavigationManager.NavigateTo("/administrator/rack/rack0");
     }
-
     private void CloseSession()
     {
         NavigationManager.NavigateTo("/login");

@@ -1,5 +1,6 @@
 using BlazorApp_Tutorial.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<ItemsRackService>();
-
+builder.Services.AddTransient<ItemRackService>();
+builder.Services.AddTransient<ItemCountService>();
+builder.Services.AddScoped<RackStockService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAutenthenticationStateProvider>();
+builder.Services.AddSingleton<HttpClient>();
 
 var app = builder.Build();
 
@@ -26,6 +30,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
