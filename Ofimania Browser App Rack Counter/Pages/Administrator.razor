@@ -3,7 +3,7 @@
 
 @inject NavigationManager NavigationManager
 @inject RackStockService StockService
-@inject AuthenticationStateProvider GetAuthenticationStateAsync
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 
@@ -11,7 +11,8 @@
 
 <AuthorizeView>
     <Authorized>
-        <p>¡Bienvenido <b>@UserName</b>, al Menú Principal!</p>
+
+        <p>¡Bienvenido <b>@context.User.Identity?.Name</b>, al Menú Principal!</p>
         <h4 h4 style="font-weight:lighter; color:black">Seleccione un rack para empezar a catalogar:</h4>
         <br />
         @if (rackStocks == null)
@@ -32,15 +33,10 @@
     <NotAuthorized>
 
         <p>¡Usted aún no ha iniciado sesión!</p>
+        <br>
 
     </NotAuthorized>
 </AuthorizeView>
-
-
-
-
-
-<br>
 
 
 @*<button class="btn btn-primary" @onclick="() => RackSorting()">Rack</button>
@@ -49,26 +45,18 @@
 
 @code {
 
-
     [Parameter]
-    public string UserId { get; set; }
-    public string UserName { get; set; }
-
     public RackStock rackStock { get; set; }
     public List<RackStock> rackStocks { get; set; }
 
     protected override void OnInitialized()
     {
-        UserName = UserId;
-        rackStock = new RackStock();
+                rackStock = new RackStock();
     }
 
     protected override async Task OnInitializedAsync()
     {
         rackStocks = await StockService.GetRackStocks();
-        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
-        var user = authstate.User;
-        UserId = user.Identity.Name;
     }
 
     private void RackSorting(string rack)

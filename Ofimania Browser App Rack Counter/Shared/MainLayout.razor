@@ -11,14 +11,14 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <div class="col-9" style="text-align:start">
+        <div class="top-row">
+            <div class="col">
                 <img src="/img/ofimania_strip-logo.webp" width="100px" height="45px" />
             </div>
             <AuthorizeView>
                 <Authorized>
                     <div>
-                        <label class="col-12 font-weight-bold">Bienvenido: [USER NAME]  .</label>
+                        <label class="col-12 font-weight-bold">Bienvenido: @context.User.Identity?.Name &ensp;</label>
                     </div>
                     <div>
                         <button class="btn btn-primary" @onclick="CloseSession">Log Out</button>
