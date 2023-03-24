@@ -12,7 +12,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddTransient<ItemRackService>();
 builder.Services.AddTransient<ItemCountService>();
 builder.Services.AddScoped<RackStockService>();
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAutenthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddSingleton<HttpClient>();
 
 var app = builder.Build();

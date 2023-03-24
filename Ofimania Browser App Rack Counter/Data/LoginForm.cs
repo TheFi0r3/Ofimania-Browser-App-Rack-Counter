@@ -9,7 +9,9 @@ namespace BlazorApp_Tutorial.Data
 {
     public class LoginForms
     {
-        public string UserNameId { get; set; }
+        public string UserId { get; set; }
+
+        public string UserName { get; set; }
 
         public string UserPassword { get; set; }
 

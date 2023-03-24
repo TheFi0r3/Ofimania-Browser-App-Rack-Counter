@@ -1,7 +1,8 @@
 ﻿@page "/login"
 @layout LoginLayout
-@inject NavigationManager NavigationManager;
 @using BlazorApp_Tutorial.Data;
+@inject NavigationManager NavigationManager;
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Log In</PageTitle>
 
@@ -18,7 +19,7 @@
 
         <div class="col-12 row">
             <label class="col-12 font-weight-bold" style="text-align:left">Nombre de Usuario</label>
-            <InputText class="form-control col-3" @bind-Value="loginForm.UserNameId" placeholder="Nombre de Usuario" />
+            <InputText class="form-control col-3" @bind-Value="loginForm.UserId" placeholder="Nombre de Usuario" />
         </div>
         <br/>
         <div class="col-12 row">
@@ -46,11 +47,13 @@
         loginForm = new LoginForms();
     }
 
-    private void LoginSybase()
+    private async Task<bool> LoginSybase()
     {
         // DB Connection
         loginDetails = 1;
         //
+
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(loginForm.UserId);
 
         if (loginDetails != 0)
         {
@@ -62,6 +65,8 @@
         }
 
         currentCount++;
+
+        return await Task.FromResult(true);
     }
 
 }

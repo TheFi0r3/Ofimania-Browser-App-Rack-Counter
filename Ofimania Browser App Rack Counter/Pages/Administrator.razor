@@ -3,26 +3,41 @@
 @inject NavigationManager NavigationManager
 @inject RackStockService StockService
 
-<h1>Main Menu</h1>
-<br>
-<p>¡Bienvenido @UserName, al Menu Principal!</p>
-<br>
-<p>Seleccione un Rack para Empezar a Catalogar</p>
+<h1>Menu Principal</h1>
 
-@if (racks == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    @foreach (var rackStock in rackStocks)
-    {
-        <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
-        <span>&nbsp;</span>
-        <br>
-        <br>
-    }
-}
+<AuthorizeView>
+    <Authorized>
+        <p>¡Bienvenido @UserName, al Menu Principal!</p>
+        <p>Seleccione un Rack para Empezar a Catalogar</p>
+
+        @if (racks == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var rackStock in rackStocks)
+            {
+                <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
+                <span>&nbsp;</span>
+                <br>
+                <br>
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+
+        <p>¡Usted aun no ha iniciado sesion!</p>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+<br>
+
 
 @*<button class="btn btn-primary" @onclick="() => RackSorting()">Rack</button>
 <button class="btn btn-primary" @onclick="CloseSession">Log Out</button>*@
@@ -45,8 +60,8 @@ else
 
     protected override void OnInitialized()
     {
-        UserId = "Antonio Andres";
-        UserName = "Antonio Andres";
+        UserId = "Antonio Andres Fiore";
+        UserName = UserId;
         rackStock = new RackStock();
     }
 
