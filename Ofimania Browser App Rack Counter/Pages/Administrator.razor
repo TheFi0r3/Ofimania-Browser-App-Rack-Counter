@@ -1,16 +1,20 @@
 ﻿@page "/administrator"
-@using BlazorApp_Tutorial.Data
+@using Ofimania_Browser_App_Rack_Counter.Data
+
 @inject NavigationManager NavigationManager
 @inject RackStockService StockService
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
 
-<h1>Menu Principal</h1>
+
+
+<h1 style="font-weight:bold; color:blue">Menú Principal</h1>
 
 <AuthorizeView>
     <Authorized>
-        <p>¡Bienvenido @UserName, al Menu Principal!</p>
-        <p>Seleccione un Rack para Empezar a Catalogar</p>
-
-        @if (racks == null)
+        <p>¡Bienvenido <b>@UserName</b>, al Menú Principal!</p>
+        <h4 h4 style="font-weight:lighter; color:black">Seleccione un rack para empezar a catalogar:</h4>
+        <br />
+        @if (rackStocks == null)
         {
             <p><em>Loading...</em></p>
         }
@@ -27,7 +31,7 @@
     </Authorized>
     <NotAuthorized>
 
-        <p>¡Usted aun no ha iniciado sesion!</p>
+        <p>¡Usted aún no ha iniciado sesión!</p>
 
     </NotAuthorized>
 </AuthorizeView>
@@ -45,10 +49,6 @@
 
 @code {
 
-    private static readonly string[] racks = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
 
     [Parameter]
     public string UserId { get; set; }
@@ -57,10 +57,8 @@
     public RackStock rackStock { get; set; }
     public List<RackStock> rackStocks { get; set; }
 
-
     protected override void OnInitialized()
     {
-        UserId = "Antonio Andres Fiore";
         UserName = UserId;
         rackStock = new RackStock();
     }
@@ -68,6 +66,9 @@
     protected override async Task OnInitializedAsync()
     {
         rackStocks = await StockService.GetRackStocks();
+        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        var user = authstate.User;
+        UserId = user.Identity.Name;
     }
 
     private void RackSorting(string rack)

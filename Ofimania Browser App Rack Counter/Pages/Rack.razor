@@ -1,11 +1,11 @@
 ﻿@page "/administrator/rack/{rackId}"
 @page "/administrator/rack"
-@using BlazorApp_Tutorial.Data
+@using Ofimania_Browser_App_Rack_Counter.Data
 @inject NavigationManager NavigationManager
 @inject ItemRackService RackService
 @inject ItemCountService CountService
 
-<h3>Rack Number @RackId: </h3>
+<h1 style="font-weight:bold; color:blue">Rack Número @RackId:</h1>
 
 <div class="col-12">
 
@@ -61,9 +61,9 @@ else if (showHide == true)
     <table class="table">
         <thead>
             <tr>
-                <th>Name of Item</th>
-                <th>Code of Item</th>
-                <th>Number of Items</th>
+                <th>Nombre de Producto</th>
+                <th>Codigo de Producto</th>
+                <th>Cantidad</th>
             </tr>
         </thead>
         <tbody>
@@ -88,9 +88,9 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Name of Item</th>
-                <th>Code of Item</th>
-                <th>Number of Items</th>
+                <th>Nombre de Producto</th>
+                <th>Codigo de Producto</th>
+                <th>Cantidad</th>
             </tr>
         </thead>
         <tbody>

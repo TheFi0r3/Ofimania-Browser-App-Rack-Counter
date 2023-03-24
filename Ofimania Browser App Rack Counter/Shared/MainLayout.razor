@@ -1,5 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using Ofimania_Browser_App_Rack_Counter.Data;
+@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager;
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Ofimania Rack Counter</PageTitle>
 
@@ -13,13 +15,21 @@
             <div class="col-9" style="text-align:start">
                 <img src="/img/ofimania_strip-logo.webp" width="100px" height="45px" />
             </div>
-            <div>
-                <label class="col-12 font-weight-bold">Bienvenido: [USER NAME]  .</label>
-
-            </div>
-            <div>
-                <button class="btn btn-primary" @onclick="CloseSession">Logout</button>
-            </div>
+            <AuthorizeView>
+                <Authorized>
+                    <div>
+                        <label class="col-12 font-weight-bold">Bienvenido: [USER NAME]  .</label>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" @onclick="CloseSession">Log Out</button>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div>
+                        <button class="btn btn-primary" @onclick="OpenSession">Log In</button>
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">
@@ -31,6 +41,12 @@
 @code {
 
     private void CloseSession()
+    {
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedOut();
+        NavigationManager.NavigateTo("/login");
+    }
+
+    private void OpenSession()
     {
         NavigationManager.NavigateTo("/login");
     }

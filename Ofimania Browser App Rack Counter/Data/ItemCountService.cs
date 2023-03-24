@@ -1,4 +1,4 @@
-﻿namespace BlazorApp_Tutorial.Data
+﻿namespace Ofimania_Browser_App_Rack_Counter.Data
 {
     public class ItemCountService
     {
@@ -16,7 +16,7 @@
             return await Task.FromResult(ItemsCount);
         }
 
-        public async Task<ItemRack> GetItemsByCode(int itemCode)
+        public async Task<ItemRack> GetItemsByCode(long itemCode)
         {
             return await Task.FromResult(ItemsCount.Where(auth => auth.ItemCode == itemCode).FirstOrDefault());
         }

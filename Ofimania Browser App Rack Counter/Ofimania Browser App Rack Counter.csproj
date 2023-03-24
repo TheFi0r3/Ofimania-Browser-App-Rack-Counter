@@ -4,7 +4,10 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Ofimania_Browser_App_Rack_Counter</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.SessionStorage" Version="2.3.0" />
+  </ItemGroup>
 
 </Project>

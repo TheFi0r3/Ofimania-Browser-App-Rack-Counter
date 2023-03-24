@@ -7,11 +7,11 @@ using System.Net.Mail;
 using System.Numerics;
 using System.Threading.Tasks;
 
-namespace BlazorApp_Tutorial.Data
+namespace Ofimania_Browser_App_Rack_Counter.Data
 {
     public class ItemRack      
     { 
-        public int ItemCode { get; set; }
+        public long ItemCode { get; set; }
 
         public string ItemName { get; set; }
 

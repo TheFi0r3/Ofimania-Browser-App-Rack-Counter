@@ -1,8 +1,9 @@
 ﻿@page "/login"
 @layout LoginLayout
-@using BlazorApp_Tutorial.Data;
+@using Ofimania_Browser_App_Rack_Counter.Data;
 @inject NavigationManager NavigationManager;
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject Blazored.SessionStorage.ISessionStorageService SessionStorage
 
 <PageTitle>Log In</PageTitle>
 
@@ -15,8 +16,8 @@
    
     <h4 style="font-weight:lighter; color:black">Coloque sus datos de usuario:</h4><br>
 
-    <EditForm Model="@loginForm" OnValidSubmit="@LoginSybase">
-
+    <EditForm Model="@loginForm" OnValidSubmit="@LoginSybase" OnInvalidSubmit="@FailedLogin">
+        <DataAnnotationsValidator  />
         <div class="col-12 row">
             <label class="col-12 font-weight-bold" style="text-align:left">Nombre de Usuario</label>
             <InputText class="form-control col-3" @bind-Value="loginForm.UserId" placeholder="Nombre de Usuario" />
@@ -24,7 +25,7 @@
         <br/>
         <div class="col-12 row">
             <label class="col-12 font-weight-bold" style="text-align:left">Contraseña</label>
-            <InputText class="form-control col-3" @bind-Value="loginForm.UserPassword" placeholder="Contraseña" />
+            <InputText type="password" class="form-control col-3" @bind-Value="loginForm.UserPassword" placeholder="Contraseña" />
         </div>
         <br /><br />
         <div class="col-6 row">
@@ -37,9 +38,6 @@
 
 @code {
 
-    private int currentCount = 0;
-    private int loginDetails = 0;
-
     public LoginForms loginForm { get; set; }
 
     protected override void OnInitialized()
@@ -49,24 +47,22 @@
 
     private async Task<bool> LoginSybase()
     {
-        // DB Connection
-        loginDetails = 1;
-        //
 
-        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(loginForm.UserId);
-
-        if (loginDetails != 0)
-        {
-            NavigationManager.NavigateTo("/administrator");
-        }
-        else
-        {
-            NavigationManager.NavigateTo("/loginerror");
-        }
-
-        currentCount++;
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(loginForm.UserId);
+        NavigationManager.NavigateTo("/administrator");
+        await SessionStorage.SetItemAsync("UserId", loginForm.UserId);
 
         return await Task.FromResult(true);
     }
 
+    private async Task<bool> FailedLogin()
+    {
+
+//        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).GetAuthenticationStateAsync();
+
+        NavigationManager.NavigateTo("/loginerror");
+
+        return await Task.FromResult(false);
+    }
 }
+

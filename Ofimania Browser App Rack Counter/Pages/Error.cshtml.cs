@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Diagnostics;
 
-namespace BlazorApp_Tutorial.Pages
+namespace Ofimania_Browser_App_Rack_Counter.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
