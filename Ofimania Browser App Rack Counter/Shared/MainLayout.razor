@@ -21,12 +21,12 @@
                         <label class="col-12 font-weight-bold">Bienvenido: @context.User.Identity?.Name &ensp;</label>
                     </div>
                     <div>
-                        <button class="btn btn-primary" @onclick="CloseSession">Log Out</button>
+                        <button class="btn btn-primary" @onclick="CloseSession">Cerrar Sesión</button>
                     </div>
                 </Authorized>
                 <NotAuthorized>
                     <div>
-                        <button class="btn btn-primary" @onclick="OpenSession">Log In</button>
+                        <button class="btn btn-primary" @onclick="OpenSession">Iniciar Sesión</button>
                     </div>
                 </NotAuthorized>
             </AuthorizeView>
