@@ -1,6 +1,9 @@
 ﻿@page "/administrator/rack/{rackId}"
 @page "/administrator/rack"
 @using Ofimania_Browser_App_Rack_Counter.Data
+@using Sybase_Data_Access
+@using Sybase_Data_Access.Models
+
 @inject NavigationManager NavigationManager
 @inject ItemRackService RackService
 @inject ItemCountService CountService
@@ -131,9 +134,7 @@ else
         showHide = false;
         itemsRack = await RackService.GetItemsRack();
         itemsCount = await CountService.GetItemsRack();
-
     }
-
 
     private void SubmitItem()
     {
@@ -142,6 +143,7 @@ else
         itemRack = new ItemRack();
         itemCount = new ItemRack();
     }
+
     private void ClearForm()
     {
         itemRack = new ItemRack();
@@ -152,13 +154,11 @@ else
     {
         //SEND TO DB
         NavigationManager.NavigateTo("/administrator");
-
     }
 
     private void ShowHideRack()
     {
         if(showHide == false){ showHide = true; }else{showHide = false;}
-
     }
 
 }

@@ -1,27 +1,31 @@
 ﻿@page "/administrator"
 @using Ofimania_Browser_App_Rack_Counter.Data
+@using Sybase_Data_Access
+@using Sybase_Data_Access.Models
 
 @inject NavigationManager NavigationManager
 @inject RackStockService StockService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
+@inject IRackMovilData _db
 
 
 <h1 style="font-weight:bold; color:blue">Menú Principal</h1>
 
+
 <AuthorizeView>
     <Authorized>
-
-        <p>¡Bienvenido <b>@context.User.Identity?.Name</b>, al Menú Principal!</p>
+        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Menú Principal!</p>
         <h4 h4 style="font-weight:lighter; color:black">Seleccione un rack para empezar a catalogar:</h4>
+        <h2 style="font-weight:bold; color:blue">Racks de Primer Conteo</h2>
         <br />
-        @if (rackStocks == null)
+        
+        @if (rackStocks1 == null)
         {
             <p><em>Loading...</em></p>
         }
         else
         {
-            @foreach (var rackStock in rackStocks)
+            @foreach (var rackStock in rackStocks1)
             {
                 <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
                 <span>&nbsp;</span>
@@ -29,6 +33,38 @@
                 <br>
             }
         }
+        <h2 style="font-weight:bold; color:blue">Racks de Segundo Conteo</h2>
+        @if (rackStocks2 == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var rackStock in rackStocks2)
+            {
+                <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
+                <span>&nbsp;</span>
+                <br>
+                <br>
+            }
+        }
+        <h2 style="font-weight:bold; color:blue">Racks de Tercer Conteo</h2>
+        @if (rackStocks3 == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var rackStock in rackStocks3)
+            {
+                <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
+                <span>&nbsp;</span>
+                <br>
+                <br>
+            }
+        }
+
+
     </Authorized>
     <NotAuthorized>
 
@@ -47,16 +83,29 @@
 
     [Parameter]
     public RackStock rackStock { get; set; }
-    public List<RackStock> rackStocks { get; set; }
+    public string userName { get; set; }
+    private List<RackMovilModel> rackMovil;
+
+    public List<RackStock> rackStocks1 { get; set; }
+    public List<RackStock> rackStocks2 { get; set; }
+    public List<RackStock> rackStocks3 { get; set; }
 
     protected override void OnInitialized()
     {
-                rackStock = new RackStock();
+        rackStock = new RackStock();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        rackStocks = await StockService.GetRackStocks();
+        rackMovil = await _db.GetRackList("IFONSECA", "1");
+        await StockService.LoadSQLRacks(rackMovil);
+        rackStocks1 = await StockService.GetRackStocks();
+        rackMovil = await _db.GetRackList("MLUKERT", "2");
+        await StockService.LoadSQLRacks(rackMovil);
+        rackStocks2 = await StockService.GetRackStocks();
+        rackMovil = await _db.GetRackList("JANDRADE", "3");
+        await StockService.LoadSQLRacks(rackMovil);
+        rackStocks3 = await StockService.GetRackStocks();
     }
 
     private void RackSorting(string rack)

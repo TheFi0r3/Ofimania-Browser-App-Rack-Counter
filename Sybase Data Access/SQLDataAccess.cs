@@ -14,16 +14,45 @@ namespace Sybase_Data_Access
     {
         private readonly IConfiguration _config;
 
-        public string ConnectionStringName { get; set; } = "Default";
+        public string ConnectionString { get; set; }
+
+        public SqlConnection Connection { get; set; }
 
         public SQLDataAccess(IConfiguration config)
         {
             _config = config;
         }
 
+        public async Task SetConnection(string user, string password)
+        {
+           await Task.FromResult(ConnectionString = "Data Source=DESKTOP-ANTONIO\\SQLEXPRESS; Initial Catalog=SisAdmin; User ID=" + user + "; Password =" + password+ "; TrustServerCertificate=true");
+        }
+
+        public async Task<bool> CheckConnection()
+        {
+            var ConnState = true;
+
+            try
+            {
+                Connection = new SqlConnection(ConnectionString);
+                Connection.Open();
+            }
+            catch (Exception) 
+            {
+                ConnState = false;
+            }
+            finally
+            {
+                Connection.Close();
+            }
+
+            return await Task.FromResult(ConnState);
+        }
+
         public async Task<List<T>> LoadData<T, U>(string sql, U parameters)
         {
-            string connectionString = _config.GetConnectionString(ConnectionStringName);
+            //string connectionString = _config.GetConnectionString(ConnectionString);
+            string connectionString = ConnectionString;
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -35,7 +64,8 @@ namespace Sybase_Data_Access
 
         public async Task SaveData<T>(string sql, T parameters)
         {
-            string connectionString = _config.GetConnectionString(ConnectionStringName);
+            //string connectionString = _config.GetConnectionString(ConnectionString);
+            string connectionString = ConnectionString;
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {

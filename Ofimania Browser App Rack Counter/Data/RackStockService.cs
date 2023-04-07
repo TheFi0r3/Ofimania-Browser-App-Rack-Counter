@@ -1,4 +1,7 @@
-﻿namespace Ofimania_Browser_App_Rack_Counter.Data
+﻿using Sybase_Data_Access;
+using Sybase_Data_Access.Models;
+
+namespace Ofimania_Browser_App_Rack_Counter.Data
 {
     public class RackStockService
     {
@@ -8,10 +11,21 @@
         {
             RackStocks = new List<RackStock>();
 
-            RackStocks.Add(new RackStock(452135, "452135"));
-            RackStocks.Add(new RackStock(184642, "184642"));
-            RackStocks.Add(new RackStock(631232, "631232"));
-            RackStocks.Add(new RackStock(761412, "761412"));
+//            RackStocks.Add(new RackStock(452135, "452135"));
+//            RackStocks.Add(new RackStock(184642, "184642"));
+//            RackStocks.Add(new RackStock(631232, "631232"));
+//            RackStocks.Add(new RackStock(761412, "761412"));
+        }
+
+        public async Task LoadSQLRacks(List<RackMovilModel> sqlRacks)
+        {
+
+            RackStocks = new List<RackStock>();
+
+            foreach (var sqlrack in sqlRacks) 
+            {
+                RackStocks.Add(new RackStock(sqlrack.CODRACK.Value,sqlrack.CODRACK.ToString()));
+            }
         }
 
         public async Task<List<RackStock>> GetRackStocks()

@@ -10,4 +10,8 @@
     <PackageReference Include="Blazored.SessionStorage" Version="2.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sybase Data Access\Sybase Data Access.csproj" />
+  </ItemGroup>
+
 </Project>

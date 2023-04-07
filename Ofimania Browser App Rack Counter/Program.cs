@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Blazored.SessionStorage;
+using Sybase_Data_Access;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,9 @@ builder.Services.AddTransient<ItemCountService>();
 
 builder.Services.AddScoped<RackStockService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-
+builder.Services.AddScoped<ISQLDataAccess, SQLDataAccess>();
+builder.Services.AddScoped<IRackMovilData, RackMovilData>();
+builder.Services.AddScoped<IProductoData, ProductoData>();
 
 
 var app = builder.Build();
