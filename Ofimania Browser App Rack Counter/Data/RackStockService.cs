@@ -24,7 +24,7 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
 
             foreach (var sqlrack in sqlRacks) 
             {
-                RackStocks.Add(new RackStock(sqlrack.CODRACK.Value,sqlrack.CODRACK.ToString()));
+                RackStocks.Add(new RackStock(sqlrack.CODRACK.Value.ToString(), sqlrack.CODRACK.ToString()));
             }
         }
 
@@ -33,7 +33,7 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
             return await Task.FromResult(RackStocks);
         }
 
-        public async Task<RackStock> GetRacksbyCode (int rackCode)
+        public async Task<RackStock> GetRacksbyCode (string rackCode)
         {
             return await Task.FromResult(RackStocks.Where(auth => auth.RackCode == rackCode).FirstOrDefault());
         }

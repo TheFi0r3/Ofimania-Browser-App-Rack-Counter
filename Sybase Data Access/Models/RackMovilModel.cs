@@ -10,7 +10,7 @@ namespace Sybase_Data_Access.Models
     {
         public int? CODRACK { get; set; }
 
-        public int? CODPROD { get; set; }
+        public string? CODPROD { get; set; }
 
         public int? CODINVENTARIO { get; set; }
 
@@ -34,7 +34,7 @@ namespace Sybase_Data_Access.Models
 
         public string? FECHA_GENERACION { get; set; }
 
-        public long? REFERENCIA { get; set; }
+        public string? REFERENCIA { get; set; }
 
         public int? TER1 { get; set; }
 

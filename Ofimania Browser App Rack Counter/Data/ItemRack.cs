@@ -11,7 +11,7 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
 {
     public class ItemRack      
     { 
-        public long ItemCode { get; set; }
+        public string ItemCode { get; set; }
 
         public string ItemName { get; set; }
 
@@ -19,7 +19,7 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
 
         public ItemRack() { }
 
-        public ItemRack(int itemCode, string itemName, int itemNumb)
+        public ItemRack(string itemCode, string itemName, int itemNumb)
         {
             ItemCode = itemCode;
             ItemName = itemName;
@@ -28,7 +28,7 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
 
         public void Clear()
         {
-            ItemCode = 0;
+            ItemCode = "";
             ItemName = "";
             ItemNumb = 0;
         }

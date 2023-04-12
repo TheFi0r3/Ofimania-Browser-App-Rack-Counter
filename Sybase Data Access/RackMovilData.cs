@@ -17,21 +17,28 @@ namespace Sybase_Data_Access
 
         public Task<List<RackMovilModel>> GetRackList()
         {
-            string sql = "select distinct CODRACK from dbo.RACKMOVIL";
+            string sql = "select * from dbo.RACKMOVIL group by CODRACK";
+
+            return _db.LoadData<RackMovilModel, dynamic>(sql, new { });
+        }
+
+        public Task<List<RackMovilModel>> GetRackList(string user, string count, string store)
+        {
+            string sql = "select distinct CODRACK from dbo.RACKMOVIL where CODUSUAC" + count + " = '" + user + "'  and CODALMACEN = " + store;
 
             return _db.LoadData<RackMovilModel, dynamic>(sql, new { });
         }
 
         public Task<List<RackMovilModel>> GetRackList(string user, string count)
         {
-            string sql = "select distinct CODRACK from dbo.RACKMOVIL where CODUSUAC"+count+" = '"+user+"'";
+            string sql = "select distinct CODRACK from dbo.RACKMOVIL where CODUSUAC" + count + " = '" + user +  "'";
 
             return _db.LoadData<RackMovilModel, dynamic>(sql, new { });
         }
 
         public Task<List<RackMovilModel>> GetProductList(string rack)
         {
-            string sql = "select CODPROD from dbo.RACKMOVIL where CODRACK ='" + rack + "'";
+            string sql = "select * from dbo.RACKMOVIL where CODRACK = " + rack;
 
             return _db.LoadData<RackMovilModel, dynamic>(sql, new { });
         }

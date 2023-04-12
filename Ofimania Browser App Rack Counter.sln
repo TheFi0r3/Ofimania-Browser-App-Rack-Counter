@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ofimania Browser App Rack Counter", "Ofimania Browser App Rack Counter\Ofimania Browser App Rack Counter.csproj", "{76B345E8-03FF-4DA3-8395-991F0A17B955}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sybase Data Access", "Sybase Data Access\Sybase Data Access.csproj", "{180AB880-9AD0-4364-8918-964B65A21093}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sybase Data Access", "Sybase Data Access\Sybase Data Access.csproj", "{180AB880-9AD0-4364-8918-964B65A21093}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

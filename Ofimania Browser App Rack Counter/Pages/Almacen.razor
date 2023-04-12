@@ -1,24 +1,25 @@
-﻿@page "/administrator"
+﻿@page "/administrador/almacen/{storeId}"
+@page "/administrador/almacen"
 @using Ofimania_Browser_App_Rack_Counter.Data
 @using Sybase_Data_Access
 @using Sybase_Data_Access.Models
 
 @inject NavigationManager NavigationManager
 @inject RackStockService StockService
+@inject LoginFormService LoginService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IRackMovilData _db
-
 
 <h1 style="font-weight:bold; color:blue">Menú Principal</h1>
 
 
 <AuthorizeView>
     <Authorized>
-        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Menú Principal!</p>
+        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Almacen @StoreId!</p>
         <h4 h4 style="font-weight:lighter; color:black">Seleccione un rack para empezar a catalogar:</h4>
         <h2 style="font-weight:bold; color:blue">Racks de Primer Conteo</h2>
         <br />
-        
+
         @if (rackStocks1 == null)
         {
             <p><em>Loading...</em></p>
@@ -27,13 +28,14 @@
         {
             @foreach (var rackStock in rackStocks1)
             {
-                <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
+                <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName)">Rack @rackStock.RackName</button>
                 <span>&nbsp;</span>
                 <br>
                 <br>
             }
         }
         <h2 style="font-weight:bold; color:blue">Racks de Segundo Conteo</h2>
+        <br />
         @if (rackStocks2 == null)
         {
             <p><em>Loading...</em></p>
@@ -49,6 +51,7 @@
             }
         }
         <h2 style="font-weight:bold; color:blue">Racks de Tercer Conteo</h2>
+        <br />
         @if (rackStocks3 == null)
         {
             <p><em>Loading...</em></p>
@@ -74,16 +77,13 @@
     </NotAuthorized>
 </AuthorizeView>
 
-
-@*<button class="btn btn-primary" @onclick="() => RackSorting()">Rack</button>
-<button class="btn btn-primary" @onclick="CloseSession">Log Out</button>*@
-
-
 @code {
-
     [Parameter]
+    public string StoreId { get; set; }
+
     public RackStock rackStock { get; set; }
-    public string userName { get; set; }
+    public LoginForm loginData { get; set; }
+
     private List<RackMovilModel> rackMovil;
 
     public List<RackStock> rackStocks1 { get; set; }
@@ -93,32 +93,39 @@
     protected override void OnInitialized()
     {
         rackStock = new RackStock();
+        loginData = new LoginForm();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        rackMovil = await _db.GetRackList("IFONSECA", "1");
+//        rackMovil = await _db.GetRackList("IFONSECA", "1");
+        rackMovil = await _db.GetRackList(await LoginService.GetId(), "1", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks1 = await StockService.GetRackStocks();
-        rackMovil = await _db.GetRackList("MLUKERT", "2");
+//      rackMovil = await _db.GetRackList("MLUKERT", "2");
+        rackMovil = await _db.GetRackList(await LoginService.GetId(), "2", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks2 = await StockService.GetRackStocks();
-        rackMovil = await _db.GetRackList("JANDRADE", "3");
+//      rackMovil = await _db.GetRackList("JANDRADE", "3");
+        rackMovil = await _db.GetRackList(await LoginService.GetId(), "3", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks3 = await StockService.GetRackStocks();
     }
 
+    private void RackSorting(string store, string rack)
+    {
+        NavigationManager.NavigateTo("/administrador/rack/" + @store + "/" + @rack);
+    }
     private void RackSorting(string rack)
     {
-        NavigationManager.NavigateTo("/administrator/rack/" + @rack);
+        NavigationManager.NavigateTo("/administrador/rack/" + @rack);
     }
     private void RackSorting()
     {
-        NavigationManager.NavigateTo("/administrator/rack/rack0");
+        NavigationManager.NavigateTo("/administrador/rack/rack0");
     }
     private void CloseSession()
     {
         NavigationManager.NavigateTo("/login");
     }
 }
-

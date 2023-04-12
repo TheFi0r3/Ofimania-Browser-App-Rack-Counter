@@ -8,7 +8,7 @@ namespace Sybase_Data_Access.Models
 {
     public class ProductoModel
     {
-        public int? CODPROD { get; set; }
+        public string CODPROD { get; set; }
 
         public int? CODGRUPO { get; set; }
 

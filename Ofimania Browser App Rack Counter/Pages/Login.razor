@@ -1,8 +1,11 @@
 ﻿@page "/login"
 @layout LoginLayout
+
 @using Ofimania_Browser_App_Rack_Counter.Data;
 @using Sybase_Data_Access;
-@inject NavigationManager NavigationManager;
+
+@inject NavigationManager NavigationManager
+@inject LoginFormService LoginForm
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject Blazored.SessionStorage.ISessionStorageService SessionStorage
 @inject ISQLDataAccess SybaseAccess
@@ -40,11 +43,14 @@
 
 @code {
 
-    public LoginForms loginForm { get; set; }
+    public LoginForm loginForm { get; set; }
+    public LoginForm loginData { get; set; }
+
 
     protected override void OnInitialized()
     {
-        loginForm = new LoginForms();
+        loginForm = new LoginForm();
+        loginData = new LoginForm();
     }
 
     private async Task<bool> LoginSybase()
@@ -52,8 +58,9 @@
         await SybaseAccess.SetConnection(loginForm.UserId, loginForm.UserPassword);
         if (await SybaseAccess.CheckConnection())
         {
+            await LoginForm.SetId(loginForm.UserId, loginForm.UserPassword);
             ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(loginForm.UserId);
-            NavigationManager.NavigateTo("/administrator");
+            NavigationManager.NavigateTo("/administrador");
             await SessionStorage.SetItemAsync("UserId", loginForm.UserId);
         }
         else

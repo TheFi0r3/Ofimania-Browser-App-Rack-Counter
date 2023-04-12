@@ -1,5 +1,6 @@
-﻿@page "/administrator/rack/{rackId}"
-@page "/administrator/rack"
+﻿@page "/administrador/rack/{storeId}/{rackId}"
+@page "/administrador/rack/{rackId}"
+@page "/administrador/rack"
 @using Ofimania_Browser_App_Rack_Counter.Data
 @using Sybase_Data_Access
 @using Sybase_Data_Access.Models
@@ -7,8 +8,12 @@
 @inject NavigationManager NavigationManager
 @inject ItemRackService RackService
 @inject ItemCountService CountService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IRackMovilData _dbrack
+@inject IProductoData _dbprod
 
-<h1 style="font-weight:bold; color:blue">Rack Número @RackId:</h1>
+
+<h1 style="font-weight:bold; color:blue">Almacen @StoreId - Rack Número @RackId:</h1>
 
 <div class="col-12">
 
@@ -16,7 +21,7 @@
 
         <div class="col-12 row">
             <label class="col-12 font-weight-bold">Codigo de Producto</label>
-            <InputNumber class="form-control col-5" @bind-Value="itemCount.ItemCode" placeholder="Codigo de Producto" />
+            <InputText class="form-control col-5" @bind-Value="itemCount.ItemCode" placeholder="Codigo de Producto" />
         </div>
         <br />
         <div class="col-12 row">
@@ -114,7 +119,13 @@ else
 
     [Parameter]
     public string RackId { get; set; }
+    [Parameter]
+    public string StoreId { get; set; }
     private bool showHide { get; set; }
+    public string userName { get; set; }
+
+    private List<RackMovilModel> rackMobil;
+    private List<ProductoModel> rackProducto;
 
     public ItemRack itemRack { get; set; }
     public List<ItemRack> itemsRack { get; set; }
@@ -132,6 +143,15 @@ else
     protected override async Task OnInitializedAsync()
     {
         showHide = false;
+
+        rackMobil = await _dbrack.GetProductList(RackId);
+
+        foreach(var rackprod in rackMobil)
+        {
+            rackProducto = await _dbprod.GetProductInfo(rackprod.CODPROD);
+            await RackService.LoadSQLProduct(rackProducto);
+        }
+
         itemsRack = await RackService.GetItemsRack();
         itemsCount = await CountService.GetItemsRack();
     }
@@ -153,7 +173,7 @@ else
     private void FinishCount()
     {
         //SEND TO DB
-        NavigationManager.NavigateTo("/administrator");
+        NavigationManager.NavigateTo("/administrador");
     }
 
     private void ShowHideRack()

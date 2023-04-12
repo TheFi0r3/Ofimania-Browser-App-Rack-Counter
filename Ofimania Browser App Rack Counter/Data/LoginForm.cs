@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ofimania_Browser_App_Rack_Counter.Data
 {
-    public class LoginForms
+    public class LoginForm
     {
         [Required(ErrorMessage = "Se requiere Nombre de Usuario")]
         public string UserId { get; set; }
@@ -17,6 +17,13 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
         [Required(ErrorMessage = "Se requiere Contraseña")]
         public string UserPassword { get; set; }
 
-        public LoginForms() { }
+        public LoginForm() { }
+
+        public LoginForm( string userId, string userPassword) 
+        {
+            UserId = userId;
+            UserName = userId;
+            UserPassword = userPassword;
+        }
     }
 }

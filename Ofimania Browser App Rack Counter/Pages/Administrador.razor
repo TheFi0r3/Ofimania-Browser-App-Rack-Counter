@@ -1,0 +1,120 @@
+﻿@page "/administrador"
+@using Ofimania_Browser_App_Rack_Counter.Data
+@using Sybase_Data_Access
+@using Sybase_Data_Access.Models
+
+@inject NavigationManager NavigationManager
+@inject RackStoreService StoreService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IEnc_InventarioData _db
+
+
+<h1 style="font-weight:bold; color:blue">Menú Principal</h1>
+
+
+<AuthorizeView>
+    <Authorized>
+        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Menú Principal!</p>
+        <h4 h4 style="font-weight:lighter; color:black">Seleccione un almacen para empezar a catalogar:</h4>
+        <br />
+        
+        @if (rackStores== null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            
+            @foreach (var rackStore in rackStores)
+            {
+                <button class="btn btn-primary" @onclick="() => StoreSorting(rackStore.StoreName)">Almacen @rackStore.StoreName</button>
+                <span>&nbsp;</span>
+                <br>
+                <br>
+            }
+        }
+        @*
+        <h2 style="font-weight:bold; color:blue">Racks de Segundo Conteo</h2>
+        @if (rackStocks2 == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var rackStock in rackStocks2)
+            {
+                <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
+                <span>&nbsp;</span>
+                <br>
+                <br>
+            }
+        }
+        <h2 style="font-weight:bold; color:blue">Racks de Tercer Conteo</h2>
+        @if (rackStocks3 == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            @foreach (var rackStock in rackStocks3)
+            {
+                <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
+                <span>&nbsp;</span>
+                <br>
+                <br>
+            }
+        }
+        *@
+
+    </Authorized>
+    <NotAuthorized>
+
+        <p>¡Usted aún no ha iniciado sesión!</p>
+        <br>
+
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@*<button class="btn btn-primary" @onclick="() => RackSorting()">Rack</button>
+<button class="btn btn-primary" @onclick="CloseSession">Log Out</button>*@
+
+
+@code {
+
+    [Parameter]
+    public RackStock rackStock { get; set; }
+    public string userName { get; set; }
+
+    private List<Enc_InventarioModel> rackAlmacen;
+
+    public List<RackStore> rackStores { get; set; }
+
+    protected override void OnInitialized()
+    {
+        rackStock = new RackStock();
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        rackAlmacen = await _db.GetInventoryList("A");
+        await StoreService.LoadSQLStores(rackAlmacen);
+        rackStores = await StoreService.GetRackStores();
+    }
+
+
+
+    private void StoreSorting(string store)
+    {
+        NavigationManager.NavigateTo("/administrador/almacen/" + @store);
+    }
+    private void StoreSorting()
+    {
+        NavigationManager.NavigateTo("/administrador/rack");
+    }
+    private void CloseSession()
+    {
+        NavigationManager.NavigateTo("/login");
+    }
+}
