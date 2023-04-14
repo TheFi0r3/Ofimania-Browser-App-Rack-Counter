@@ -1,0 +1,83 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sybase_Data_Access.Models
+{
+
+    public class InventarioModel // [dbo].[INVENTARIO]
+    {
+        public string? CODPROD { get; set; } // [CODPROD] VARCHAR (20) NOT NULL,
+
+        // [CODRACK] VARCHAR(4) NOT NULL,
+
+        // [CODALMACEN] VARCHAR(4) NOT NULL,
+
+        // [SECCION] VARCHAR(4) NOT NULL,
+
+        // [CODSUCURSAL] VARCHAR(4) NOT NULL,
+
+        // [CODUSUA] VARCHAR(20) NOT NULL,
+
+        // [NOMEQUIELIM] VARCHAR(20) NULL,
+
+        // [NOMEQUIREG] VARCHAR(20) NOT NULL,
+
+        // [NOMUSUAELIM] VARCHAR(20) NULL,
+
+        // [ORDEN] INT NOT NULL,
+
+        // [NUMPASI] INT NOT NULL,
+
+        // [FECREG] DATETIME NOT NULL,
+
+        // [FECREGELIM] DATETIME NULL,
+
+        // [REGELIM] VARCHAR(1) NOT NULL,
+
+        // [NUM_CONTROL] VARCHAR(10) NOT NULL,
+
+        // [FECHA_CONTROL] DATE NOT NULL,
+
+        // [EXISTENCIA_CONTROL] NUMERIC(6) NOT NULL,
+
+        // [EXISTENCIA_CONTEO] NUMERIC(6) NOT NULL,
+
+        // [ESTADO] VARCHAR(1) NOT NULL,
+
+        // [FECHA_CIERRE] DATETIME NULL,
+
+        // [USUARIO_CIERRE] VARCHAR(20) NULL,
+
+        // [PRECIO_VENTA] DECIMAL(12, 2) NULL,
+
+        // [PRECIO_COSTO] DECIMAL(12, 2) NULL,
+
+        // [ACTUALIZADO] VARCHAR(1) NULL,
+
+        // [REFERENCIA] VARCHAR(20) NULL,
+
+        // [PRECIO_AFILIADO] DECIMAL(12, 2) NULL,
+
+        // [PRECIO_A] DECIMAL(12, 2) NULL,
+
+        // [COSTO_FINAN] DECIMAL(12, 2) NULL,
+
+        // [COSTO_PROM] DECIMAL(12, 2) NULL,
+
+        // [COSTO_ULT] DECIMAL(12, 2) NULL,
+
+        // [USUARIO_ACTUALIZA] VARCHAR(20) NULL,
+
+        // [FECHA_ACTUALIZA]DATETIME NULL,
+
+        // [CODINVENTARIO] NUMERIC(10) NOT NULL,
+
+        // [COSTO_DOLAR_REF] DECIMAL(12, 2) DEFAULT((0)) NOT NULL,
+
+        // CONSTRAINT[INVENTARIO_20070112002] PRIMARY KEY CLUSTERED([NUM_CONTROL] ASC, [ORDEN] ASC, [CODALMACEN] ASC, [CODSUCURSAL] ASC, [CODINVENTARIO] ASC)
+        public InventarioModel() { } // CONSTRAINT [INVENTARIO_20070112002] PRIMARY KEY CLUSTERED ([NUM_CONTROL] ASC, [ORDEN] ASC, [CODALMACEN] ASC, [CODSUCURSAL] ASC, [CODINVENTARIO] ASC)
+    }
+}

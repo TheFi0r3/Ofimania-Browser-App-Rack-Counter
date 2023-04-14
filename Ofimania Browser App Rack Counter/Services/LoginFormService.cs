@@ -1,18 +1,20 @@
-﻿namespace Ofimania_Browser_App_Rack_Counter.Data
+﻿using Ofimania_Browser_App_Rack_Counter.Data;
+
+namespace Ofimania_Browser_App_Rack_Counter.Services
 {
     public class LoginFormService
     {
 
         public LoginForm LoginData { get; set; }
 
-        public LoginFormService() 
+        public LoginFormService()
         {
             LoginData = new LoginForm();
         }
 
         public LoginFormService(string userId, string userPassword)
         {
-            LoginData = new LoginForm(userId, userPassword); 
+            LoginData = new LoginForm(userId, userPassword);
         }
 
         public async Task SetId(string userId, string userPassword)
@@ -21,7 +23,7 @@
             LoginData.UserName = userId;
             LoginData.UserPassword = userPassword;
         }
-        public async Task<string> GetId( )
+        public async Task<string> GetId()
         {
             return await Task.FromResult(LoginData.UserId);
         }

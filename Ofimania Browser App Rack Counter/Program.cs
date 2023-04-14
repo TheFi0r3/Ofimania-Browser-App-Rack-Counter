@@ -1,8 +1,11 @@
-using Ofimania_Browser_App_Rack_Counter.Data;
+
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Blazored.SessionStorage;
+
+using Ofimania_Browser_App_Rack_Counter.Data;
+using Ofimania_Browser_App_Rack_Counter.Services;
 using Sybase_Data_Access;
 using Sybase_Data_Access.Models;
 
@@ -14,22 +17,26 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddSingleton<WeatherForecastService>();
+//Singleton Services
+//builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<LoginFormService>();
 builder.Services.AddSingleton<HttpClient>();
 
+//Transient Services
 builder.Services.AddTransient<ItemRackService>();
 builder.Services.AddTransient<ItemCountService>();
 
+//Scoped Services
 builder.Services.AddScoped<RackStockService>();
 builder.Services.AddScoped<RackStoreService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
 //API Services
 builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
+
 builder.Services.AddScoped<IRackMovilData, RackMovilData>();
 builder.Services.AddScoped<IProductoData, ProductoData>();
 builder.Services.AddScoped<IEnc_InventarioData, Enc_InventarioData>();
-
 
 var app = builder.Build();
 
@@ -49,7 +56,6 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

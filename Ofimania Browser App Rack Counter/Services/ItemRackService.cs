@@ -1,7 +1,8 @@
-﻿using Sybase_Data_Access;
+﻿using Ofimania_Browser_App_Rack_Counter.Data;
+using Sybase_Data_Access;
 using Sybase_Data_Access.Models;
 
-namespace Ofimania_Browser_App_Rack_Counter.Data
+namespace Ofimania_Browser_App_Rack_Counter.Services
 {
     public class ItemRackService
     {
@@ -11,14 +12,6 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
         {
             //throw new Exception("AuthorServiceException");
             ItemsRack = new List<ItemRack>();
-
-//            ItemsRack.Add(new ItemRack(31231241, "Lapices Mongol", 122));
-//            ItemsRack.Add(new ItemRack(81621141, "Borradores Nata", 22));
-//            ItemsRack.Add(new ItemRack(73142441, "Cuadernos Andes", 33));
-//            ItemsRack.Add(new ItemRack(22342241, "Boligafros Bic", 31));
-//            ItemsRack.Add(new ItemRack(37564741, "Hojas Blancas Carta", 2));
-//            ItemsRack.Add(new ItemRack(14562451, "Cinta Plastica", 13));
-
         }
 
         public async Task LoadSQLProduct(List<ProductoModel> sqlProducts)
@@ -49,4 +42,3 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
     }
 }
 
- 

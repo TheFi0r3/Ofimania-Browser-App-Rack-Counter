@@ -10,24 +10,24 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
     {
         public int StoreStock { get; set; }
 
-        public int StoreCode { get; set; }
+        public string StoreCode { get; set; }
 
         public string StoreName { get; set; }
 
         public RackStore() { }
 
-        public RackStore(int storeStock, int? storeCode)
+        public RackStore(int storeStock, string storeCode)
         {
             if (storeCode == null)
             StoreStock = storeStock;
-            StoreCode = storeCode.Value;
-            StoreName = storeCode.ToString();
+            StoreCode = storeCode;
+            StoreName = storeCode;
         }
 
         public void Clear()
         {
             StoreStock = 0;
-            StoreCode = 0;
+            StoreCode = "";
             StoreName = "";
         }
     }

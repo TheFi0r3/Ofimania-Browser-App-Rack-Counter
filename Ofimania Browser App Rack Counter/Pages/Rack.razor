@@ -1,7 +1,9 @@
 ﻿@page "/administrador/rack/{storeId}/{rackId}"
 @page "/administrador/rack/{rackId}"
 @page "/administrador/rack"
+
 @using Ofimania_Browser_App_Rack_Counter.Data
+@using Ofimania_Browser_App_Rack_Counter.Services
 @using Sybase_Data_Access
 @using Sybase_Data_Access.Models
 
@@ -12,13 +14,11 @@
 @inject IRackMovilData _dbrack
 @inject IProductoData _dbprod
 
-
 <h1 style="font-weight:bold; color:blue">Almacen @StoreId - Rack Número @RackId:</h1>
 
 <div class="col-12">
 
     <EditForm Model="@itemCount" OnValidSubmit="@SubmitItem">
-
         <div class="col-12 row">
             <label class="col-12 font-weight-bold">Codigo de Producto</label>
             <InputText class="form-control col-5" @bind-Value="itemCount.ItemCode" placeholder="Codigo de Producto" />
@@ -46,17 +46,12 @@
                 <span>&nbsp;</span>
             </span>
         </div>
-
     </EditForm>
     <div class="col-8 row">
         <span class="col-6 row">
-
         </span>
     </div>
-
 </div>
-
-
 
 <!--...  <button class="btn btn-primary" @onclick="Submission">Submit</button>
 <button class="btn btn-primary" @onclick="Submission">Clear</button>-->

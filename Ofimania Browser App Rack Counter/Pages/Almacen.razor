@@ -1,6 +1,8 @@
 ﻿@page "/administrador/almacen/{storeId}"
 @page "/administrador/almacen"
+
 @using Ofimania_Browser_App_Rack_Counter.Data
+@using Ofimania_Browser_App_Rack_Counter.Services
 @using Sybase_Data_Access
 @using Sybase_Data_Access.Models
 
@@ -11,7 +13,6 @@
 @inject IRackMovilData _db
 
 <h1 style="font-weight:bold; color:blue">Menú Principal</h1>
-
 
 <AuthorizeView>
     <Authorized>
@@ -66,14 +67,10 @@
                 <br>
             }
         }
-
-
     </Authorized>
     <NotAuthorized>
-
         <p>¡Usted aún no ha iniciado sesión!</p>
         <br>
-
     </NotAuthorized>
 </AuthorizeView>
 
