@@ -1,5 +1,6 @@
 ﻿using Ofimania_Browser_App_Rack_Counter.Data;
 using Sybase_Data_Access;
+using Sybase_Data_Access.Data;
 using Sybase_Data_Access.Models;
 
 namespace Ofimania_Browser_App_Rack_Counter.Services
@@ -13,13 +14,16 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
             RackStores = new List<RackStore>();
         }
 
-        public async Task LoadSQLStores(List<Enc_InventarioModel> sqlStores)
+        public async Task LoadSQLStores(List<Enc_InventarioModel> sqlStores, List<AlmacenModel> sqlNames)
         {
             RackStores = new List<RackStore>();
 
             foreach (var sqlstore in sqlStores)
             {
-                RackStores.Add(new RackStore(sqlstore.CODINVENTARIO.Value, sqlstore.COD_ALMACEN));
+                foreach (var sqlname in sqlNames.Where(sqlNames => sqlNames.COD_ALMACEN == sqlstore.COD_ALMACEN))
+                {
+                    RackStores.Add(new RackStore(sqlstore.CODINVENTARIO.Value, sqlstore.COD_ALMACEN, sqlname.DESC_ALMACEN));
+                }
             }
         }
 

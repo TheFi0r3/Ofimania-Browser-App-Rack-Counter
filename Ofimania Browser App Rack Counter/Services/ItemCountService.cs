@@ -34,13 +34,16 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
 
         public async Task<bool> SaveItemRack(ItemRack itemRack)
         {
+            if (itemRack.ItemCode == null) return await Task.FromResult(false);
+
             //author.AuthorId = GetNewAuthor();
-            foreach (var rackItem in ItemsCount)
+            foreach (var rackItem in ItemsCount) {
                 if (rackItem.ItemCode == itemRack.ItemCode)
                 {
                     rackItem.ItemNumb = itemRack.ItemNumb;
                     return await Task.FromResult(true);
                 }
+            }
 
             ItemsCount.Add(itemRack);
             return await Task.FromResult(true);

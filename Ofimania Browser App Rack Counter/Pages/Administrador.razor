@@ -3,13 +3,14 @@
 @using Ofimania_Browser_App_Rack_Counter.Data
 @using Ofimania_Browser_App_Rack_Counter.Services
 @using Sybase_Data_Access
+@using Sybase_Data_Access.Data
 @using Sybase_Data_Access.Models
 
 @inject NavigationManager NavigationManager
 @inject RackStoreService StoreService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IEnc_InventarioData _db
-
+@inject IEnc_InventarioData _dbstore
+@inject IAlmacenData _dbname
 
 <h1 style="font-weight:bold; color:blue">Menú Principal</h1>
 
@@ -27,7 +28,7 @@
         {
             @foreach (var rackStore in rackStores)
             {
-                <button class="btn btn-primary" @onclick="() => StoreSorting(rackStore.StoreName)">Almacen @rackStore.StoreName</button>
+                <button class="btn btn-primary" @onclick="() => StoreSorting(rackStore.StoreCode)">Almacen @rackStore.StoreName</button>
                 <span>&nbsp;</span>
                 <br>
                 <br>
@@ -49,11 +50,12 @@
 
     [Parameter]
 
-    public string userName { get; set; }
+    public string UserName { get; set; }
 
     public RackStock rackStock { get; set; }
 
     private List<Enc_InventarioModel> rackAlmacen;
+    private List<AlmacenModel> storeNames;
 
     public List<RackStore> rackStores { get; set; }
 
@@ -64,8 +66,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        rackAlmacen = await _db.GetInventoryList("A");
-        await StoreService.LoadSQLStores(rackAlmacen);
+        rackAlmacen = await _dbstore.GetInventoryList("A");
+        storeNames = await _dbname.GetStoreNames();
+        await StoreService.LoadSQLStores(rackAlmacen, storeNames);
         rackStores = await StoreService.GetRackStores();
     }
 

@@ -1,10 +1,12 @@
-﻿@page "/administrador/rack/{storeId}/{rackId}"
+﻿@page "/administrador/rack/{storeId}/{rackId}/{countNumb}"
+@page "/administrador/rack/{storeId}/{rackId}"
 @page "/administrador/rack/{rackId}"
 @page "/administrador/rack"
 
 @using Ofimania_Browser_App_Rack_Counter.Data
 @using Ofimania_Browser_App_Rack_Counter.Services
 @using Sybase_Data_Access
+@using Sybase_Data_Access.Data
 @using Sybase_Data_Access.Models
 
 @inject NavigationManager NavigationManager
@@ -13,8 +15,13 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IRackMovilData _dbrack
 @inject IProductoData _dbprod
+@inject IAlmacenData _dbstore
+@inject IPasilloData _dbasile
+@inject ISeccionData _dbsecc
+@inject IUbicacionData _dblocat
 
-<h1 style="font-weight:bold; color:blue">Almacen @StoreId - Rack Número @RackId:</h1>
+<h1 style="font-weight:bold; color:blue">Almacen @StoreName - Rack Número @RackId:</h1>
+<h3 style="font-weight:bold; color:blue">Seccion @SeccionName - @AsileName</h3>
 
 <div class="col-12">
 
@@ -116,11 +123,22 @@ else
     public string RackId { get; set; }
     [Parameter]
     public string StoreId { get; set; }
-    private bool showHide { get; set; }
-    public string userName { get; set; }
+    [Parameter]
+    public string CountNumb { get; set; }
 
-    private List<RackMovilModel> rackMobil;
+    private bool showHide { get; set; }
+
+    public string StoreName { get; set; }
+    public string UserName { get; set; }
+    public string AsileName { get; set; }
+    public string SeccionName { get; set; }
+
+    private List<RackMovilModel> rackMovil;
     private List<ProductoModel> rackProducto;
+    //    private List<AlmacenModel> storeNames;
+    //    private List<PasilloModel> asileNames;
+    //    private List<SeccionModel> seccionNames;
+    //    private List<UbicacionModel> rackLocation;
 
     public ItemRack itemRack { get; set; }
     public List<ItemRack> itemsRack { get; set; }
@@ -139,9 +157,18 @@ else
     {
         showHide = false;
 
-        rackMobil = await _dbrack.GetProductList(RackId);
+        var rackLocation = await _dblocat.GetLocationCodes(RackId);
+        var storeNames = await _dbstore.GetStoreName(rackLocation.First().CODALMACEN);
+        var seccionNames = await _dbsecc.GetSeccionName(rackLocation.First().SECCION);
+        var asileNames = await _dbasile.GetAsileName(rackLocation.First().NUMPASI.ToString());
 
-        foreach(var rackprod in rackMobil)
+        StoreName = storeNames.First().DESC_ALMACEN;
+        SeccionName = seccionNames.First().DESSEC;
+        AsileName = asileNames.First().DESCRIPCION;
+
+        rackMovil = await _dbrack.GetProductList(RackId);
+
+        foreach(var rackprod in rackMovil)
         {
             rackProducto = await _dbprod.GetProductInfo(rackprod.CODPROD);
             await RackService.LoadSQLProduct(rackProducto);

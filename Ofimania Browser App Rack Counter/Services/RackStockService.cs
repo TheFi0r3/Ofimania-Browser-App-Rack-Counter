@@ -19,7 +19,7 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
 
             foreach (var sqlrack in sqlRacks)
             {
-                RackStocks.Add(new RackStock(sqlrack.CODRACK.Value.ToString(), sqlrack.CODRACK.ToString()));
+                RackStocks.Add(new RackStock(sqlrack.CODRACK, sqlrack.CODRACK));
             }
         }
 

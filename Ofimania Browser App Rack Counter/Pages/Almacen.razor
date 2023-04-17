@@ -4,19 +4,21 @@
 @using Ofimania_Browser_App_Rack_Counter.Data
 @using Ofimania_Browser_App_Rack_Counter.Services
 @using Sybase_Data_Access
+@using Sybase_Data_Access.Data
 @using Sybase_Data_Access.Models
 
 @inject NavigationManager NavigationManager
 @inject RackStockService StockService
 @inject LoginFormService LoginService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IRackMovilData _db
+@inject IRackMovilData _dbrack
+@inject IAlmacenData _dbname
 
 <h1 style="font-weight:bold; color:blue">Menú Principal</h1>
 
 <AuthorizeView>
     <Authorized>
-        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Almacen @StoreId!</p>
+        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Almacen @StoreName!</p>
         <h4 h4 style="font-weight:lighter; color:black">Seleccione un rack para empezar a catalogar:</h4>
         <h2 style="font-weight:bold; color:blue">Racks de Primer Conteo</h2>
         <br />
@@ -29,7 +31,7 @@
         {
             @foreach (var rackStock in rackStocks1)
             {
-                <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName)">Rack @rackStock.RackName</button>
+                <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 1.ToString())">Rack @rackStock.RackName</button>
                 <span>&nbsp;</span>
                 <br>
                 <br>
@@ -45,7 +47,7 @@
         {
             @foreach (var rackStock in rackStocks2)
             {
-                <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
+                <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 2.ToString())">Rack @rackStock.RackName</button>
                 <span>&nbsp;</span>
                 <br>
                 <br>
@@ -61,7 +63,7 @@
         {
             @foreach (var rackStock in rackStocks3)
             {
-                <button class="btn btn-primary" @onclick="() => RackSorting(rackStock.RackName)">Rack @rackStock.RackName</button>
+                <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 3.ToString())">Rack @rackStock.RackName</button>
                 <span>&nbsp;</span>
                 <br>
                 <br>
@@ -77,11 +79,14 @@
 @code {
     [Parameter]
     public string StoreId { get; set; }
+    public string StoreName { get; set; }
 
     public RackStock rackStock { get; set; }
     public LoginForm loginData { get; set; }
 
     private List<RackMovilModel> rackMovil;
+    private List<AlmacenModel> storeNames;
+
 
     public List<RackStock> rackStocks1 { get; set; }
     public List<RackStock> rackStocks2 { get; set; }
@@ -95,20 +100,26 @@
 
     protected override async Task OnInitializedAsync()
     {
-//        rackMovil = await _db.GetRackList("IFONSECA", "1");
-        rackMovil = await _db.GetRackList(await LoginService.GetId(), "1", StoreId);
+        storeNames = await _dbname.GetStoreName(StoreId);
+        StoreName = storeNames.First().DESC_ALMACEN;
+        //        rackMovil = await _db.GetRackList("IFONSECA", "1");
+        rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "1", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks1 = await StockService.GetRackStocks();
 //      rackMovil = await _db.GetRackList("MLUKERT", "2");
-        rackMovil = await _db.GetRackList(await LoginService.GetId(), "2", StoreId);
+        rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "2", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks2 = await StockService.GetRackStocks();
 //      rackMovil = await _db.GetRackList("JANDRADE", "3");
-        rackMovil = await _db.GetRackList(await LoginService.GetId(), "3", StoreId);
+        rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "3", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks3 = await StockService.GetRackStocks();
     }
 
+    private void RackSorting(string store, string rack, string count)
+    {
+        NavigationManager.NavigateTo("/administrador/rack/" + @store + "/" + @rack + "/" + @count);
+    }
     private void RackSorting(string store, string rack)
     {
         NavigationManager.NavigateTo("/administrador/rack/" + @store + "/" + @rack);

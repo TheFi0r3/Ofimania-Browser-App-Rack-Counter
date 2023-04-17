@@ -16,12 +16,12 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
 
         public RackStore() { }
 
-        public RackStore(int storeStock, string storeCode)
+        public RackStore(int storeStock, string storeCode, string storeName)
         {
-            if (storeCode == null)
+//            if (storeCode == null)
             StoreStock = storeStock;
             StoreCode = storeCode;
-            StoreName = storeCode;
+            StoreName = storeName;
         }
 
         public void Clear()

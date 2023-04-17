@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 namespace Ofimania_Browser_App_Rack_Counter.Data
 {
     public class ItemRack      
-    { 
+    {
+        [Required(ErrorMessage = "Se requiere Codigo de Producto")]
         public string ItemCode { get; set; }
 
         public string ItemName { get; set; }
 
+        [Required(ErrorMessage = "Se requiere Cantidad de Producto")]
         public int ItemNumb { get; set; }
 
         public ItemRack() { }

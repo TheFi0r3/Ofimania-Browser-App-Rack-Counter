@@ -8,6 +8,7 @@ using Ofimania_Browser_App_Rack_Counter.Data;
 using Ofimania_Browser_App_Rack_Counter.Services;
 using Sybase_Data_Access;
 using Sybase_Data_Access.Models;
+using Sybase_Data_Access.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,10 @@ builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
 builder.Services.AddScoped<IRackMovilData, RackMovilData>();
 builder.Services.AddScoped<IProductoData, ProductoData>();
 builder.Services.AddScoped<IEnc_InventarioData, Enc_InventarioData>();
+builder.Services.AddScoped<IAlmacenData, AlmacenData>();
+builder.Services.AddScoped<IPasilloData, PasilloData>();
+builder.Services.AddScoped<ISeccionData, SeccionData>();
+builder.Services.AddScoped<IUbicacionData, UbicacionData>();
 
 var app = builder.Build();
 
