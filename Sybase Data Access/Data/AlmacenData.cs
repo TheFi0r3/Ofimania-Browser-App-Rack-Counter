@@ -25,7 +25,7 @@ namespace Sybase_Data_Access.Data
 
         public Task<List<AlmacenModel>> GetStoreName(string storeCode)
         {
-            string sql = "select DESC_ALMACEN from dbo.ALMACEN where COD_ALMACEN = " + storeCode;
+            string sql = "select DESC_ALMACEN from dbo.ALMACEN where COD_ALMACEN = '" + storeCode + "'";
 
             return _db.LoadData<AlmacenModel, dynamic>(sql, new { });
         }

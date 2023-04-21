@@ -18,7 +18,7 @@ namespace Sybase_Data_Access
 
         public Task<List<ProductoModel>> GetProductInfo(string productCode)
         {
-            string sql = "select * from dbo.PRODUCTO where CODPROD = " + productCode;
+            string sql = "select * from dbo.PRODUCTO where CODPROD = '" + productCode + "'";
 
             return _db.LoadData<ProductoModel, dynamic>(sql, new { });
         }

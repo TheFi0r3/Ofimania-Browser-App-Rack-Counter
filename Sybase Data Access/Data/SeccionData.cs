@@ -25,7 +25,7 @@ namespace Sybase_Data_Access.Data
 
         public Task<List<SeccionModel>> GetSeccionName(string seccionCode)
         {
-            string sql = "select DESSEC from dbo.SECCION where CODSEC = " + seccionCode;
+            string sql = "select DESSEC from dbo.SECCION where CODSEC = '" + seccionCode + "'";
 
             return _db.LoadData<SeccionModel, dynamic>(sql, new { });
         }

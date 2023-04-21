@@ -24,7 +24,7 @@ namespace Sybase_Data_Access
 
         public Task<List<RackMovilModel>> GetRackList(string userName, string countNumb, string storeCode)
         {
-            string sql = "select distinct CODRACK from dbo.RACKMOVIL where CODUSUAC" + countNumb + " = '" + userName + "'  and CODALMACEN = " + storeCode;
+            string sql = "select distinct CODRACK from dbo.RACKMOVIL where CODUSUAC" + countNumb + " = '" + userName + "'  and CODALMACEN = '" + storeCode + "'";
 
             return _db.LoadData<RackMovilModel, dynamic>(sql, new { });
         }
@@ -38,7 +38,7 @@ namespace Sybase_Data_Access
 
         public Task<List<RackMovilModel>> GetProductList(string rackCode)
         {
-            string sql = "select * from dbo.RACKMOVIL where CODRACK = " + rackCode;
+            string sql = "select * from dbo.RACKMOVIL where CODRACK = '" + rackCode + "'";
 
             return _db.LoadData<RackMovilModel, dynamic>(sql, new { });
         }

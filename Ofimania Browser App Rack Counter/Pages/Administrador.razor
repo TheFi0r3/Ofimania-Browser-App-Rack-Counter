@@ -17,7 +17,7 @@
 <AuthorizeView>
     <Authorized>
         <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Menú Principal!</p>
-        <h4 h4 style="font-weight:lighter; color:black">Seleccione un almacen para empezar a catalogar:</h4>
+        <h4 h4 style="font-weight:lighter; color:black">Seleccione un Almacén para empezar a catalogar:</h4>
         <br />
         
         @if (rackStores== null)
@@ -28,7 +28,7 @@
         {
             @foreach (var rackStore in rackStores)
             {
-                <button class="btn btn-primary" @onclick="() => StoreSorting(rackStore.StoreCode)">Almacen @rackStore.StoreName</button>
+                <button class="btn btn-primary" @onclick="() => StoreSorting(rackStore.StoreCode)">@rackStore.StoreName</button>
                 <span>&nbsp;</span>
                 <br>
                 <br>

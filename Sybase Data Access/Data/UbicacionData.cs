@@ -25,7 +25,7 @@ namespace Sybase_Data_Access.Data
 
         public Task<List<UbicacionModel>> GetLocationCodes(string rackCode)
         {
-            string sql = "select distinct CODRACK, NUMPASI, SECCION, CODALMACEN from dbo.UBICACION where CODRACK = " + rackCode;
+            string sql = "select distinct CODRACK, NUMPASI, SECCION, CODALMACEN from dbo.UBICACION where CODRACK = '" + rackCode + "'";
 
             return _db.LoadData<UbicacionModel, dynamic>(sql, new { });
         }

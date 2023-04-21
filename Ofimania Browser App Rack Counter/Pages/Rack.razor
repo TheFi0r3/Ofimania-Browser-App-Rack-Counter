@@ -20,25 +20,25 @@
 @inject ISeccionData _dbsecc
 @inject IUbicacionData _dblocat
 
-<h1 style="font-weight:bold; color:blue">Almacen @StoreName - Rack Número @RackId:</h1>
-<h3 style="font-weight:bold; color:blue">Seccion @SeccionName - @AsileName</h3>
+<h1 style="font-weight:bold; color:blue">Almacén @StoreName - Rack Número @RackId:</h1>
+<h3 style="font-weight:bold; color:blue">Sección @SeccionName - @AsileName</h3>
 
 <div class="col-12">
 
     <EditForm Model="@itemCount" OnValidSubmit="@SubmitItem">
         <div class="col-12 row">
-            <label class="col-12 font-weight-bold">Codigo de Producto</label>
-            <InputText class="form-control col-5" @bind-Value="itemCount.ItemCode" placeholder="Codigo de Producto" />
+            <label class="col-12 font-weight-bold">Código de Producto</label>
+            <InputText class="form-control col-5" @bind-Value="itemCount.ItemCode" placeholder="Código de Producto" />
         </div>
         <br />
         <div class="col-12 row">
             <label class="col-12 font-weight-bold">Nombre de Producto</label>
-            <InputText class="form-control col-5" @bind-Value="itemCount.ItemName" placeholder="Codigo de Producto" />
+            <InputText class="form-control col-5" @bind-Value="itemCount.ItemName" placeholder="Nombre de Producto" />
         </div>
         <br />
         <div class="col-12 row">
-            <label class="col-12 font-weight-bold">Numero de Productos</label>
-            <InputNumber class="form-control col-5" @bind-Value="itemCount.ItemNumb" placeholder="Numero de Productos" />
+            <label class="col-12 font-weight-bold">Número de Productos</label>
+            <InputNumber class="form-control col-5" @bind-Value="itemCount.ItemNumb" placeholder="Número de Productos" />
         </div>
         <br />
         <div class="col-8 row">
