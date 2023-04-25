@@ -16,11 +16,18 @@ namespace Sybase_Data_Access
             _db = db;
         }
 
-        public Task<List<ProductoModel>> GetProductInfo(string productCode)
+        public Task<List<ProductoModel>> GetProductInfo(string prodCode)
         {
-            string sql = "select * from dbo.PRODUCTO where CODPROD = '" + productCode + "'";
+            string sql = "select * from dbo.PRODUCTO where CODPROD = '" + prodCode + "'";
 
             return _db.LoadData<ProductoModel, dynamic>(sql, new { });
+        }
+
+        public Task<List<string>> GetProductName(string prodCode)
+        {
+            string sql = "select DESPROD from dbo.PRODUCTO where CODPROD = '" + prodCode + "'";
+
+            return _db.LoadData<string, dynamic>(sql, new { });
         }
     }
 }

@@ -12,111 +12,143 @@
 @inject NavigationManager NavigationManager
 @inject ItemRackService RackService
 @inject ItemCountService CountService
+@inject LoginFormService LoginService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime JSRuntime;
+
 @inject IRackMovilData _dbrack
 @inject IProductoData _dbprod
 @inject IAlmacenData _dbstore
 @inject IPasilloData _dbasile
 @inject ISeccionData _dbsecc
 @inject IUbicacionData _dblocat
+@inject IProducto_ReferenciaData _dbref
 
 <h1 style="font-weight:bold; color:blue">Almacén @StoreName - Rack Número @RackId:</h1>
 <h3 style="font-weight:bold; color:blue">Sección @SeccionName - @AsileName</h3>
 
-<div class="col-12">
-
-    <EditForm Model="@itemCount" OnValidSubmit="@SubmitItem">
-        <div class="col-12 row">
-            <label class="col-12 font-weight-bold">Código de Producto</label>
-            <InputText class="form-control col-5" @bind-Value="itemCount.ItemCode" placeholder="Código de Producto" />
-        </div>
-        <br />
-        <div class="col-12 row">
-            <label class="col-12 font-weight-bold">Nombre de Producto</label>
-            <InputText class="form-control col-5" @bind-Value="itemCount.ItemName" placeholder="Nombre de Producto" />
-        </div>
-        <br />
-        <div class="col-12 row">
-            <label class="col-12 font-weight-bold">Número de Productos</label>
-            <InputNumber class="form-control col-5" @bind-Value="itemCount.ItemNumb" placeholder="Número de Productos" />
-        </div>
-        <br />
+@if (itemsRack == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (rackNotEmpty)
+{
+    <div class="col-12">
+        <EditForm Model="@itemCount" OnValidSubmit="@SubmitItem">
+            <div class="col-12 row">
+                <label class="col-12 font-weight-bold">Código de Producto</label>
+                <InputText class="form-control col-5" @bind-Value="itemCount.ItemCode" placeholder="Código de Producto" />
+            </div>
+            <br />
+            <div class="col-12 row">
+                <label class="col-12 font-weight-bold">Código de Barra</label>
+                <InputText class="form-control col-5" @bind-Value="itemCount.ItemBarCode" placeholder="Código de Barra" />
+            </div>
+            <br />
+            <!--<div class="col-12 row">
+                <label class="col-12 font-weight-bold">Nombre de Producto</label>
+                <InputText class="form-control col-5" @bind-Value="itemCount.ItemName" placeholder="Nombre de Producto" />
+            </div>
+            <br />-->
+            <div class="col-12 row">
+                <label class="col-12 font-weight-bold">Número de Productos</label>
+                <InputNumber class="form-control col-5" @bind-Value="itemCount.ItemNumb" placeholder="Número de Productos" />
+            </div>
+            <br />
+            <div class="col-8 row">
+                <span class="col-8 row">
+                    <input type="button" class="form-control col-2 btn btn-primary" @onclick="SubmitItem" value="Añadir" />
+                    <span>&nbsp;</span>
+                    <input type="button" class="form-control col-2 btn btn-primary" @onclick="DeleteItem" value="Borrar" />
+                    <span>&nbsp;</span>
+                    <input type="button" class="form-control col-2 btn btn-primary" @onclick="ClearForm" value="Limpíar" />
+                    <span>&nbsp;</span>
+                    <input type="button" class="form-control col-1 btn btn-primary" @onclick="FinishCount" value="Finalizar" />
+                    <span>&nbsp;</span>
+                    <input type="button" class="form-control col-1 btn btn-primary" @onclick="ShowHideRack" value="Mostar/Ocultar Tabla" />
+                    <span>&nbsp;</span>
+                </span>
+            </div>
+        </EditForm>
         <div class="col-8 row">
             <span class="col-6 row">
-                <input type="submit" class="form-control col-1 btn btn-primary" value="Añadir" />
-                <span>&nbsp;</span>
-                <button class="btn btn-primary" @onclick="ClearForm">Eliminar</button>
-                <span>&nbsp;</span>
-                <button class="btn btn-primary" @onclick="FinishCount">Finalizar</button>
-                <span>&nbsp;</span>
-                <button class="btn btn-primary" @onclick="ShowHideRack">Mostar/Ocultar Tabla</button>
-                <span>&nbsp;</span>
             </span>
         </div>
-    </EditForm>
-    <div class="col-8 row">
-        <span class="col-6 row">
-        </span>
     </div>
-</div>
-
-<!--...  <button class="btn btn-primary" @onclick="Submission">Submit</button>
-<button class="btn btn-primary" @onclick="Submission">Clear</button>-->
-@if (itemsRack == null)
-{
-    <p><em>Loading...</em></p>
-}
-else if (showHide == true)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nombre de Producto</th>
-                <th>Código de Producto</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var rackItem in itemsRack)
-            {
-                <tr>
-                    <td>@rackItem.ItemName</td>
-                    <td>@rackItem.ItemCode</td>
-                    <td>@rackItem.ItemNumb</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-@if (itemsRack == null)
-{
-    <p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nombre de Producto</th>
-                <th>Código de Producto</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var rackItem in itemsCount)
-            {
-                <tr>
-                    <td>@rackItem.ItemName</td>
-                    <td>@rackItem.ItemCode</td>
-                    <td>@rackItem.ItemNumb</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <p><em>Este Rack no esta asignado para Usted</em></p>
 }
+<AuthorizeView>
+    <Authorized>
 
+        @if (itemsRack == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else if (showHide == true)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre de Producto</th>
+                        <th>Código de Producto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rackItem in itemsRack)
+                    {
+                        <tr>
+                            <td>@rackItem.ItemName</td>
+                            <td>@rackItem.ItemCode</td>
+                            <td>@rackItem.ItemNumb</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
 
+        @if (itemsRack == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nombre de Producto</th>
+                        <th>Código de Producto</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rackItem in itemsCount)
+                    {
+                        <tr>
+                            @if (!rackItem.ItemInRack)
+                            {<td>*@rackItem.ItemName</td>}
+                            else{<td>@rackItem.ItemName</td>}
+                            <td>@rackItem.ItemCode</td>
+                            <td>@rackItem.ItemNumb</td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>¡Usted aún no ha iniciado sesión!</p>
+        <br>
+    </NotAuthorized>
+</AuthorizeView>
+
+<!--...  <button class="btn btn-primary" @onclick="Submission">Submit</button>
+<button class="btn btn-primary" @onclick="Submission">Clear</button>-->
 @code {
 
     [Parameter]
@@ -127,14 +159,16 @@ else
     public string CountNumb { get; set; }
 
     private bool showHide { get; set; }
+    private bool rackNotEmpty { get; set; }
 
     public string StoreName { get; set; }
     public string UserName { get; set; }
     public string AsileName { get; set; }
     public string SeccionName { get; set; }
 
-    private List<RackMovilModel> rackMovil;
-    private List<ProductoModel> rackProducto;
+    //private List<RackMovilModel> rackProductList;
+    //private List<RackMovilModel> rackProductInfo;
+    //private List<ProductoModel> rackProductoData;
     //    private List<AlmacenModel> storeNames;
     //    private List<PasilloModel> asileNames;
     //    private List<SeccionModel> seccionNames;
@@ -149,14 +183,35 @@ else
     protected override void OnInitialized()
     {
         showHide = false;
+        rackNotEmpty = false;
         itemRack = new ItemRack();
         itemCount = new ItemRack();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        showHide = false;
+        await NamingElements();
+        UserName = await LoginService.GetId();
 
+        showHide = false;
+        rackNotEmpty = false;
+
+        var rackProductList = await _dbrack.GetProductList(RackId, UserName, CountNumb);
+
+        foreach(var rackprod in rackProductList)
+        {
+            var prodCount = await _dbrack.GetProductCount(RackId, rackprod.CODPROD, CountNumb);
+            var rackProductoData = await _dbprod.GetProductInfo(rackprod.CODPROD);
+            await RackService.LoadSQLProduct(rackProductoData, prodCount);
+            rackNotEmpty = true;
+        }
+
+        itemsRack = await RackService.GetItemsRack();
+        itemsCount = await CountService.GetItemsRack();
+    }
+
+    private async Task NamingElements()
+    {
         var rackLocation = await _dblocat.GetLocationCodes(RackId);
         var storeNames = await _dbstore.GetStoreName(rackLocation.First().CODALMACEN);
         var seccionNames = await _dbsecc.GetSeccionName(rackLocation.First().SECCION);
@@ -165,42 +220,74 @@ else
         StoreName = storeNames.First().DESC_ALMACEN;
         SeccionName = seccionNames.First().DESSEC;
         AsileName = asileNames.First().DESCRIPCION;
-
-        rackMovil = await _dbrack.GetProductList(RackId);
-
-        foreach(var rackprod in rackMovil)
-        {
-            rackProducto = await _dbprod.GetProductInfo(rackprod.CODPROD);
-            await RackService.LoadSQLProduct(rackProducto);
-        }
-
-        itemsRack = await RackService.GetItemsRack();
-        itemsCount = await CountService.GetItemsRack();
     }
 
-    private void SubmitItem()
+    private async Task SubmitItem()
     {
+        var prodcode = await _dbref.GetProdCode(itemCount.ItemBarCode);
+
+        if (itemCount.ItemCode == null & prodcode != null & itemCount.ItemBarCode != null) 
+            try {itemCount.ItemCode = prodcode.First().CODPROD;}
+            catch (Exception) { await JSRuntime.InvokeVoidAsync("errorBarCode"); }
+
         // DB Connection
-        CountService.SaveItemRack(itemCount);
+        var itemCountName = await _dbprod.GetProductInfo(itemCount.ItemCode);
+        var rackProductList = await _dbrack.GetProductList(RackId, await LoginService.GetId(), CountNumb);
+
+        var opstate = await CountService.SaveItemRack(itemCount, itemCountName, rackProductList);
+
+        if (!opstate) await JSRuntime.InvokeVoidAsync("errorNoProduct");
+
         itemRack = new ItemRack();
         itemCount = new ItemRack();
     }
 
-    private void ClearForm()
+    private async Task DeleteItem()
+    {
+        await CountService.DeleteItemRack(itemCount);
+
+        itemRack = new ItemRack();
+        itemCount = new ItemRack();
+    }
+
+    private async Task ClearForm()
     {
         itemRack = new ItemRack();
         itemCount = new ItemRack();
     }
 
-    private void FinishCount()
+    private async Task FinishCount()
     {
+
+
+
+        foreach (var itemCount in itemsCount)
+        {
+            if(itemCount.ItemInRack)
+            {
+                await _dbrack.UpdateRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode);
+            }
+            else
+            {
+                try
+                {
+                    await _dbrack.InsertRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode, "0001", StoreId, UserName,itemCount.ItemBarCode);
+                }
+                catch(Exception)
+                {
+                    await _dbrack.UpdateRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode);
+                }
+            }
+        }
         //SEND TO DB
-        NavigationManager.NavigateTo("/administrador");
+        NavigationManager.NavigateTo("/administrador/almacen/" + @StoreId);
     }
 
-    private void ShowHideRack()
+    private async Task ShowHideRack()
     {
         if(showHide == false){ showHide = true; }else{showHide = false;}
     }
+
+
 
 }

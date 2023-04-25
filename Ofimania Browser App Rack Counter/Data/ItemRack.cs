@@ -11,28 +11,44 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
 {
     public class ItemRack      
     {
-        [Required(ErrorMessage = "Se requiere Codigo de Producto")]
+//        [Required(ErrorMessage = "Se requiere Codigo de Producto")]
         public string ItemCode { get; set; }
+
+        public string ItemBarCode { get; set; }
 
         public string ItemName { get; set; }
 
-        [Required(ErrorMessage = "Se requiere Cantidad de Producto")]
+//        [Required(ErrorMessage = "Se requiere Cantidad de Producto")]
         public int ItemNumb { get; set; }
 
-        public ItemRack() { }
+        public bool ItemInRack { get; set; }
+
+        public ItemRack() 
+        {
+
+        }
+
+        public ItemRack(string itemCode, string itemName, int itemNumb, string itemBarCode, bool itemInRack)
+        {
+            ItemCode = itemCode;
+            ItemName = itemName;
+            ItemNumb = itemNumb;
+            ItemBarCode = itemBarCode;
+            ItemInRack = itemInRack;
+        }
 
         public ItemRack(string itemCode, string itemName, int itemNumb)
         {
             ItemCode = itemCode;
             ItemName = itemName;
             ItemNumb = itemNumb;
+            ItemBarCode = itemCode;
+            ItemInRack = true;
         }
 
         public void Clear()
         {
-            ItemCode = "";
-            ItemName = "";
-            ItemNumb = 0;
+
         }
     }
 }

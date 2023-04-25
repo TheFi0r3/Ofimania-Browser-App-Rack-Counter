@@ -4,6 +4,8 @@ namespace Sybase_Data_Access
 {
     public interface IProductoData
     {
-        Task<List<ProductoModel>> GetProductInfo(string productCode);
+        Task<List<ProductoModel>> GetProductInfo(string prodCode);
+
+        Task<List<string>> GetProductName(string prodCode);
     }
 }

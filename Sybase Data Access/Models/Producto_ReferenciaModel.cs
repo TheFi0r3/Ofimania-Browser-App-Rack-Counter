@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Sybase_Data_Access.Models
 {
-    public class Producto_Referencia // [dbo].[PRODUCTO_REFERENCIA]
+    public class Producto_ReferenciaModel // [dbo].[PRODUCTO_REFERENCIA]
     {
         public string? COD_REFERENCIA { get; set; } // [COD_REFERENCIA] VARCHAR(20) NOT NULL,
         public string? CODPROD { get; set; } // [CODPROD] VARCHAR(20) NOT NULL,
@@ -18,6 +18,6 @@ namespace Sybase_Data_Access.Models
         public string? REGELIM { get; set; } // [REGELIM] CHAR(1) NOT NULL,
         public string? NOMEQUIREG { get; set; } // [NOMEQUIREG] VARCHAR(20) NULL,
         public int? IND_ACT { get; set; } // [IND_ACT] INT DEFAULT((0)) NOT NULL,
-        public Producto_Referencia() { } // CONSTRAINT [PK_PRODUCTO_REFERENCIA] PRIMARY KEY CLUSTERED ([COD_REFERENCIA] ASC, [CODPROD] ASC, [REGELIM] ASC)
+        public Producto_ReferenciaModel() { } // CONSTRAINT [PK_PRODUCTO_REFERENCIA] PRIMARY KEY CLUSTERED ([COD_REFERENCIA] ASC, [CODPROD] ASC, [REGELIM] ASC)
     }
 }

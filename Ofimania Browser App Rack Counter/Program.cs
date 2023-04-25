@@ -1,8 +1,8 @@
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Blazored.SessionStorage;
+
 
 using Ofimania_Browser_App_Rack_Counter.Data;
 using Ofimania_Browser_App_Rack_Counter.Services;
@@ -42,6 +42,7 @@ builder.Services.AddScoped<IAlmacenData, AlmacenData>();
 builder.Services.AddScoped<IPasilloData, PasilloData>();
 builder.Services.AddScoped<ISeccionData, SeccionData>();
 builder.Services.AddScoped<IUbicacionData, UbicacionData>();
+builder.Services.AddScoped<IProducto_ReferenciaData, Producto_ReferenciaData>();
 
 var app = builder.Build();
 

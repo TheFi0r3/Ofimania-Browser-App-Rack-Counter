@@ -1,4 +1,5 @@
-﻿using Ofimania_Browser_App_Rack_Counter.Data;
+﻿using Microsoft.IdentityModel.Tokens;
+using Ofimania_Browser_App_Rack_Counter.Data;
 using Sybase_Data_Access;
 using Sybase_Data_Access.Models;
 
@@ -14,11 +15,11 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
             ItemsRack = new List<ItemRack>();
         }
 
-        public async Task LoadSQLProduct(List<ProductoModel> sqlProducts)
+        public async Task LoadSQLProduct(List<ProductoModel> sqlProducts, List<int> sqlCount)
         {
             foreach (var sqlproduct in sqlProducts)
             {
-                ItemsRack.Add(new ItemRack(sqlproduct.CODPROD, sqlproduct.DESPROD, 0));
+                ItemsRack.Add(new ItemRack(sqlproduct.CODPROD, sqlproduct.DESPROD, sqlCount.First()));
             }
         }
 
@@ -37,6 +38,11 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
             //author.AuthorId = GetNewAuthor();
             ItemsRack.Add(itemRack);
             return await Task.FromResult(true);
+        }
+
+        public async Task<bool> IsEmpty()
+        {
+            return ItemsRack.IsNullOrEmpty();
         }
 
     }
