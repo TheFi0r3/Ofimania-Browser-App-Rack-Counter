@@ -18,7 +18,6 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
 
         public RackStore(int storeStock, string storeCode, string storeName)
         {
-//            if (storeCode == null)
             StoreStock = storeStock;
             StoreCode = storeCode;
             StoreName = storeName;

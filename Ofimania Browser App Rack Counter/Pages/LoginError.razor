@@ -1,4 +1,6 @@
-﻿@page "/loginerror"
+﻿@page "/loginerror/{errorCode}"
+@page "/loginerror"
+
 @layout LoginLayout
 @inject NavigationManager NavigationManager
 
@@ -11,7 +13,7 @@
 <div class="col-12 row">
 
     <h4 style="font-weight:lighter; color:black">¡Error!: Sus credenciales son inválidas</h4><br>
-        <br /><br /><br />
+    <br /><br /><br />
 </div>
 
 <div class="col-4 ">

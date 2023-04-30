@@ -18,7 +18,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Almacén @StoreName!</p>
+        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al @StoreName!</p>
         <h4 h4 style="font-weight:lighter; color:black">Seleccione un Rack para empezar a catalogar:</h4>
         <h2 style="font-weight:bold; color:blue">Racks de Primer Conteo</h2>
         <br />
@@ -102,15 +102,12 @@
     {
         storeNames = await _dbname.GetStoreName(StoreId);
         StoreName = storeNames.First().DESC_ALMACEN;
-        //        rackMovil = await _db.GetRackList("IFONSECA", "1");
         rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "1", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks1 = await StockService.GetRackStocks();
-//      rackMovil = await _db.GetRackList("MLUKERT", "2");
         rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "2", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks2 = await StockService.GetRackStocks();
-//      rackMovil = await _db.GetRackList("JANDRADE", "3");
         rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "3", StoreId);
         await StockService.LoadSQLRacks(rackMovil);
         rackStocks3 = await StockService.GetRackStocks();

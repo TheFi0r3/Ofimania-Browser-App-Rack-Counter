@@ -36,8 +36,8 @@
             <InputText type="password" class="form-control col-3" @bind-Value="loginForm.UserPassword" placeholder="Contraseña" />
         </div>
         <br /><br />
-        <div class="col-6 row">
-            <span class="col-6 row"></span>
+        <div class="col-8 row">
+            <span class="col-8 row"></span>
             <input type="submit" class="form-control btn btn-primary" value="Iniciar Sesión" />
         </div>
         <br />
@@ -57,7 +57,8 @@
 
     private async Task<bool> LoginSybase()
     {
-        await SybaseAccess.SetConnection(loginForm.UserId, loginForm.UserPassword);
+        var server = await SybaseAccess.SetServerAddress();
+        await SybaseAccess.SetConnection(loginForm.UserId, loginForm.UserPassword, server);
         if (await SybaseAccess.CheckConnection())
         {
             await LoginForm.SetId(loginForm.UserId, loginForm.UserPassword);

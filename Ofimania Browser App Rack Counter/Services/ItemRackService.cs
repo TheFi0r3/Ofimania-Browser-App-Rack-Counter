@@ -15,11 +15,13 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
             ItemsRack = new List<ItemRack>();
         }
 
-        public async Task LoadSQLProduct(List<ProductoModel> sqlProducts, List<int> sqlCount)
+        public async Task LoadSQLProduct(List<ProductoModel> sqlProduct,List<RackMovilModel> sqlRack, List<int> sqlCount)
         {
-            foreach (var sqlproduct in sqlProducts)
+            foreach (var sqlproduct in sqlProduct)
             {
-                ItemsRack.Add(new ItemRack(sqlproduct.CODPROD, sqlproduct.DESPROD, sqlCount.First()));
+                foreach(var sqlrack in sqlRack) { 
+                    ItemsRack.Add(new ItemRack(sqlproduct.CODPROD, sqlproduct.DESPROD, sqlCount.First(), sqlrack.REFERENCIA, true));
+                }
             }
         }
 
@@ -35,7 +37,6 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
 
         public async Task<bool> SaveItemRack(ItemRack itemRack)
         {
-            //author.AuthorId = GetNewAuthor();
             ItemsRack.Add(itemRack);
             return await Task.FromResult(true);
         }

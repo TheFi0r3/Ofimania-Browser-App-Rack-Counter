@@ -28,9 +28,9 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
             return await Task.FromResult(ItemsCount);
         }
 
-        public async Task<ItemRack> GetItemsByCode(string itemCode)
+        public async Task<ItemRack> GetItemByCode(string itemCode)
         {
-            return await Task.FromResult(ItemsCount.Where(auth => auth.ItemCode == itemCode).FirstOrDefault());
+            return await Task.FromResult(ItemsCount.Where(ItemRack => ItemRack.ItemCode == itemCode).FirstOrDefault());
         }
 
         public async Task<bool> SaveItemRack(ItemRack itemRack, List<ProductoModel> itemName, List<RackMovilModel> rackList)
@@ -44,7 +44,6 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
                 if (rackprod.CODPROD == itemRack.ItemCode) itemRack.ItemInRack = true;
             }
 
-            //author.AuthorId = GetNewAuthor();
             foreach (var rackItem in ItemsCount) {
                 if (rackItem.ItemCode == itemRack.ItemCode)
                 {

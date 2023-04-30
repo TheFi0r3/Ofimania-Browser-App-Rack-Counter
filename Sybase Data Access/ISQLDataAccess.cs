@@ -4,7 +4,9 @@
     {
         string ConnectionString { get; set; }
 
-        Task SetConnection(string user, string password);
+        Task<string> SetServerAddress();
+
+        Task SetConnection(string user, string password, string server);
 
         Task<bool> CheckConnection();
 

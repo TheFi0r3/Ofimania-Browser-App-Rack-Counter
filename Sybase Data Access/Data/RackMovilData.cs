@@ -59,7 +59,6 @@ namespace Sybase_Data_Access
 
         public Task UpdateRackMovil(string countNumb, string countProd, string rackCode, string prodCode)
         {
-
             string sql = "update dbo.RACKMOVIL " +
                 "set CON" + countNumb + " = " + countProd + ", FECHA_CONTEO = CURRENT_TIMESTAMP, TER" + countNumb + "= 1 " +
                 "where CODRACK = '" + rackCode + "' and  CODPROD = '" + prodCode + "'";
@@ -71,9 +70,26 @@ namespace Sybase_Data_Access
             if (barCode == null) barCode = "'NULL'";
             else barCode = "'" + barCode + "'";
 
+            var CODUSAC1 = "NO ASIGNADO";
+            var CODUSAC2 = "NO ASIGNADO";
+            var CODUSAC3 = "NO ASIGNADO";
+
+            switch (countNumb)
+            {
+                case "1":
+                    CODUSAC1 = userName;
+                    break;
+                case "2":
+                    CODUSAC2 = userName;
+                    break;
+                case "3":
+                    CODUSAC3 = userName;
+                    break;
+            }
+
             string sql = "insert into dbo.RACKMOVIL " +
-                "(CODRACK, CODPROD, CODINVENTARIO, CODSUCURSAL, CODALMACEN, CODUSUAC" + countNumb + ", CON" + countNumb + ", FECHA_CONTEO, FECHA_GENERACION, REFERENCIA, TER"+ countNumb + ") " +
-                "values ('"+rackCode+"', '" + prodCode+"', 6, '" + SucCode+"', '" + storeCode+"', '" + userName+"', "+countProd+", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, "+barCode+", 1)";
+                "(CODRACK, CODPROD, CODINVENTARIO, CODSUCURSAL, CODALMACEN, CODUSUAC1, CODUSUAC2, CODUSUAC3, CON" + countNumb + ", FECHA_CONTEO, FECHA_GENERACION, REFERENCIA, TER"+ countNumb + ") " +
+                "values ('"+rackCode+"', '" + prodCode+"', 6, '" + SucCode+"', '" + storeCode+ "', '" + CODUSAC1 + "','" + CODUSAC2 + "','" + CODUSAC3 + "', " + countProd+", CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, "+barCode+", 1)";
 
             return _db.SaveData(sql, new { });
         }

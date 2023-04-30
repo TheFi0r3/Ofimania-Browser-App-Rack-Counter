@@ -32,6 +32,5 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
         {
             return await Task.FromResult(RackStocks.Where(auth => auth.RackCode == rackCode).FirstOrDefault());
         }
-
     }
 }

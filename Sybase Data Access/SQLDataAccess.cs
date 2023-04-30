@@ -29,10 +29,55 @@ namespace Sybase_Data_Access
             _config = config;
         }
 
-        public async Task SetConnection(string user, string password)
+        public async Task<string> SetServerAddress()
         {
-           await Task.FromResult(ConnectionString = "Data Source=DESKTOP-ANTONIO\\SQLEXPRESS; Initial Catalog=SisAdmin; User ID=" + user + "; Password =" + password+ "; TrustServerCertificate=true");
-//           await Task.FromResult(ConnectionString = "Data Source='VALENCIA2';Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
+            string line;
+
+            try
+            {
+                StreamReader sr = new StreamReader("ini\\Server.ini"); //Pass the file path and file name to the StreamReader constructor
+                                      //Read the first line of text
+                line = sr.ReadLine(); //[database]
+                line = sr.ReadLine(); //DBMS = "SYC Adaptive Server Enterprise"
+                line = sr.ReadLine(); //DATABASE = "SisAdmin"
+                line = sr.ReadLine();
+
+                while (line != null)  //Continue to read until you reach end of file
+                {
+                    if (line.Contains("SERVER")) 
+                    {
+                        if (line.Contains("--"))
+                        {
+                            line = sr.ReadLine();
+                            continue;
+                        }
+
+                        line = line.Remove(0, 10);
+                        line = line.Trim(new Char[] { '"', '\\' });
+
+                        sr.Close(); //close the file
+
+                        return await Task.FromResult(line);
+                    }
+
+                    line = sr.ReadLine();
+                    continue;
+                }
+
+                sr.Close(); //close the file
+            }
+            catch (Exception e)
+            {
+                return await Task.FromResult("ERROR: " + e.Message);
+            }
+
+            return await Task.FromResult("ERROR: No se encuentra servidor");
+        }
+
+        public async Task SetConnection(string user, string password,string server)
+        {
+            await Task.FromResult(ConnectionString = "Data Source=DESKTOP-ANTONIO\\SQLEXPRESS; Initial Catalog=SisAdmin; User ID=" + user + "; Password =" + password+ "; TrustServerCertificate=true");
+//            await Task.FromResult(ConnectionString = "Data Source='" + server + "';Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
         }
 
         public async Task<bool> CheckConnection()
@@ -43,14 +88,11 @@ namespace Sybase_Data_Access
             {
                 Connection = new SqlConnection(ConnectionString);
                 Connection.Open();
+                Connection.Close();
             }
             catch (Exception) 
             {
                 ConnState = false;
-            }
-            finally
-            {
-                Connection.Close();
             }
 
             return await Task.FromResult(ConnState);
@@ -58,8 +100,7 @@ namespace Sybase_Data_Access
 
         public async Task<List<T>> LoadData<T, U>(string sql, U parameters)
         {
-            //string connectionString = _config.GetConnectionString(ConnectionString);
-            string connectionString = ConnectionString;
+            string connectionString = ConnectionString; //string connectionString = _config.GetConnectionString(ConnectionString);
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -71,8 +112,7 @@ namespace Sybase_Data_Access
 
         public async Task SaveData<T>(string sql, T parameters)
         {
-            //string connectionString = _config.GetConnectionString(ConnectionString);
-            string connectionString = ConnectionString;
+            string connectionString = ConnectionString; //string connectionString = _config.GetConnectionString(ConnectionString);
 
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
