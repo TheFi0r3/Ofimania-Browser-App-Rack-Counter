@@ -1,5 +1,5 @@
 ﻿@page "/administrador/almacen/{storeId}"
-@page "/administrador/almacen"
+@*@page "/administrador/almacen"*@
 
 @using Ofimania_Browser_App_Rack_Counter.Data
 @using Ofimania_Browser_App_Rack_Counter.Services
@@ -18,57 +18,65 @@
 
 <AuthorizeView>
     <Authorized>
-        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al @StoreName!</p>
-        <h4 h4 style="font-weight:lighter; color:black">Seleccione un Rack para empezar a catalogar:</h4>
-        <h2 style="font-weight:bold; color:blue">Racks de Primer Conteo</h2>
-        <br />
+        @if (storeExists){
+            <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al @StoreName!</p>
+            <h4 h4 style="font-weight:lighter; color:black">Seleccione un Rack para empezar a catalogar:</h4>
+            <h2 style="font-weight:bold; color:blue">Racks de Primer Conteo</h2>
+            <br />
 
-        @if (rackStocks1 == null)
-        {
-            <p><em>Loading...</em></p>
+            @if (rackStocks1 == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                @foreach (var rackStock in rackStocks1)
+                {
+                    <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 1.ToString())">Rack @rackStock.RackName</button>
+                    <span>&nbsp;</span>
+                    <br>
+                    <br>
+                }
+            }
+            <h2 style="font-weight:bold; color:blue">Racks de Segundo Conteo</h2>
+            <br />
+            @if (rackStocks2 == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                @foreach (var rackStock in rackStocks2)
+                {
+                    <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 2.ToString())">Rack @rackStock.RackName</button>
+                    <span>&nbsp;</span>
+                    <br>
+                    <br>
+                }
+            }
+            <h2 style="font-weight:bold; color:blue">Racks de Tercer Conteo</h2>
+            <br />
+            @if (rackStocks3 == null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                @foreach (var rackStock in rackStocks3)
+                {
+                    <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 3.ToString())">Rack @rackStock.RackName</button>
+                    <span>&nbsp;</span>
+                    <br>
+                    <br>
+                }
+            }
         }
         else
         {
-            @foreach (var rackStock in rackStocks1)
-            {
-                <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 1.ToString())">Rack @rackStock.RackName</button>
-                <span>&nbsp;</span>
-                <br>
-                <br>
-            }
+            <p>¡Este Almacén no existe!</p>
+            <br>
         }
-        <h2 style="font-weight:bold; color:blue">Racks de Segundo Conteo</h2>
-        <br />
-        @if (rackStocks2 == null)
-        {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
-            @foreach (var rackStock in rackStocks2)
-            {
-                <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 2.ToString())">Rack @rackStock.RackName</button>
-                <span>&nbsp;</span>
-                <br>
-                <br>
-            }
-        }
-        <h2 style="font-weight:bold; color:blue">Racks de Tercer Conteo</h2>
-        <br />
-        @if (rackStocks3 == null)
-        {
-            <p><em>Loading...</em></p>
-        }
-        else
-        {
-            @foreach (var rackStock in rackStocks3)
-            {
-                <button class="btn btn-primary" @onclick="() => RackSorting(StoreId,rackStock.RackName, 3.ToString())">Rack @rackStock.RackName</button>
-                <span>&nbsp;</span>
-                <br>
-                <br>
-            }
-        }
+
     </Authorized>
     <NotAuthorized>
         <p>¡Usted aún no ha iniciado sesión!</p>
@@ -84,6 +92,8 @@
     public RackStock rackStock { get; set; }
     public LoginForm loginData { get; set; }
 
+    private bool storeExists { get; set; }
+
     private List<RackMovilModel> rackMovil;
     private List<AlmacenModel> storeNames;
 
@@ -94,6 +104,7 @@
 
     protected override void OnInitialized()
     {
+        storeExists = true;
         rackStock = new RackStock();
         loginData = new LoginForm();
     }
@@ -101,16 +112,31 @@
     protected override async Task OnInitializedAsync()
     {
         storeNames = await _dbname.GetStoreName(StoreId);
-        StoreName = storeNames.First().DESC_ALMACEN;
-        rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "1", StoreId);
-        await StockService.LoadSQLRacks(rackMovil);
+        try { StoreName = storeNames.First().DESC_ALMACEN; }
+        catch (Exception) { storeExists = false; }
+
+        try 
+        { 
+            rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "1", StoreId); 
+            await StockService.LoadSQLRacks(rackMovil);
+        } catch (Exception) { }
         rackStocks1 = await StockService.GetRackStocks();
-        rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "2", StoreId);
-        await StockService.LoadSQLRacks(rackMovil);
+
+        try
+        { 
+            rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "2", StoreId); 
+            await StockService.LoadSQLRacks(rackMovil);
+        } catch (Exception) { }
         rackStocks2 = await StockService.GetRackStocks();
-        rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "3", StoreId);
-        await StockService.LoadSQLRacks(rackMovil);
+
+        try 
+        { 
+            rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "3", StoreId); 
+            await StockService.LoadSQLRacks(rackMovil);
+        }
+        catch (Exception) { }
         rackStocks3 = await StockService.GetRackStocks();
+
     }
 
     private void RackSorting(string store, string rack, string count)

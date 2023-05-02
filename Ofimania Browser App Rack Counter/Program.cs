@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Blazored.SessionStorage;
 
-
 using Ofimania_Browser_App_Rack_Counter.Data;
 using Ofimania_Browser_App_Rack_Counter.Services;
 using Sybase_Data_Access;
@@ -20,8 +19,8 @@ builder.Services.AddHttpContextAccessor();
 
 //Singleton Services
 //builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<LoginFormService>();
-builder.Services.AddSingleton<HttpClient>();
+builder.Services.AddScoped<LoginFormService>();
+builder.Services.AddScoped<HttpClient>();
 
 //Transient Services
 builder.Services.AddTransient<ItemRackService>();

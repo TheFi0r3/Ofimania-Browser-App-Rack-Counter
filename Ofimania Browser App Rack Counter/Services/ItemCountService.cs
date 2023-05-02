@@ -11,7 +11,6 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
 
         public ItemCountService()
         {
-            //throw new Exception("AuthorServiceException");
             ItemsCount = new List<ItemRack>();
         }
 

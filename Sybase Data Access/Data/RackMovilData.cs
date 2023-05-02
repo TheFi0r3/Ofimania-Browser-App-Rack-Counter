@@ -22,6 +22,13 @@ namespace Sybase_Data_Access
             return _db.LoadData<RackMovilModel, dynamic>(sql, new { });
         }
 
+        public Task<List<RackMovilModel>> CheckRackList(string userName, string countNumb, string rackCode)
+        {
+            string sql = "select distinct CODRACK from dbo.RACKMOVIL where CODUSUAC" + countNumb + " = '" + userName + "'  and CODRACK = '" + rackCode + "' and TER" + countNumb + "= 0";
+
+            return _db.LoadData<RackMovilModel, dynamic>(sql, new { });
+        }
+
         public Task<List<RackMovilModel>> GetRackList(string userName, string countNumb, string storeCode)
         {
             string sql = "select distinct CODRACK from dbo.RACKMOVIL where CODUSUAC" + countNumb + " = '" + userName + "'  and CODALMACEN = '" + storeCode + "'";

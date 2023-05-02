@@ -9,12 +9,10 @@
   <ItemGroup>
     <Compile Include="Data\.old\WeatherForecast.cs" />
     <Compile Include="Data\.old\WeatherForecastService.cs" />
-    <Compile Include="Pages\.old\Error.cshtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Pages\.old\Counter.razor" />
-    <Content Include="Pages\.old\Error.cshtml" />
     <Content Include="Pages\.old\FetchData.razor" />
   </ItemGroup>
 

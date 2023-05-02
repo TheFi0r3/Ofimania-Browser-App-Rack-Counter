@@ -8,6 +8,10 @@ function errorNoProduct()
 	alert('¡No existe dicho Producto!');
 }
 
+function errorInvalidInput() {
+    alert('¡Entrada Invalida!');
+}
+
 window.onFocus = (id) => {
     var currInput = document.activeElement;
     if (currInput.tagName.toLowerCase() == "input") {

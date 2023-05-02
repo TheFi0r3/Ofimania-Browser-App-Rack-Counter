@@ -64,9 +64,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        rackAlmacen = await _dbstore.GetInventoryList("A");
-        storeNames = await _dbname.GetStoreNames();
-        await StoreService.LoadSQLStores(rackAlmacen, storeNames);
+        try
+        {
+            rackAlmacen = await _dbstore.GetInventoryList("A");
+            storeNames = await _dbname.GetStoreNames();
+            await StoreService.LoadSQLStores(rackAlmacen, storeNames);
+        }catch (Exception) { }
+
         rackStores = await StoreService.GetRackStores();
     }
 

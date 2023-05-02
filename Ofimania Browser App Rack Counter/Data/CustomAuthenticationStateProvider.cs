@@ -40,7 +40,6 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
             var user = new ClaimsPrincipal(identity);
 
             return await Task.FromResult(new AuthenticationState(user));
-
         }
 
         public void MarkUserAsLoggedIn(string userId)

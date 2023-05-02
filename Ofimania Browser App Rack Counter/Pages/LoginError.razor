@@ -1,5 +1,5 @@
-﻿@page "/loginerror/{errorCode}"
-@page "/loginerror"
+﻿@page "/loginerror"
+@page "/loginerror/{errorCode}"
 
 @layout LoginLayout
 @inject NavigationManager NavigationManager
@@ -21,6 +21,8 @@
 </div>
 
 @code {
+    [Parameter]
+    public string errorCode { get; set; }
 
     private void CloseSession()
     {

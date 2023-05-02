@@ -6,6 +6,8 @@ namespace Sybase_Data_Access
     {
         Task<List<RackMovilModel>> GetRackList();
 
+        Task<List<RackMovilModel>> CheckRackList(string userName, string countNumb, string rackCode);
+
         Task<List<RackMovilModel>> GetRackList(string userName, string countNumb, string storeCode);
 
         Task<List<RackMovilModel>> GetRackList(string userName, string countNumb);
