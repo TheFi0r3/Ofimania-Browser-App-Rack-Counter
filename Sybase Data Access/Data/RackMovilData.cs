@@ -59,7 +59,7 @@ namespace Sybase_Data_Access
 
         public Task<List<int>> GetProductCount(string rackCode, string productCode, string countNumb)
         {
-            string sql = "select CON" + countNumb + " from dbo.RackMovil where CODRACK = '" + rackCode + "' and CODPROD = '" + productCode + "'";
+            string sql = "select CON" + countNumb + " from dbo.RACKMOVIL where CODRACK = '" + rackCode + "' and CODPROD = '" + productCode + "'";
 
             return _db.LoadData<int, dynamic>(sql, new { });
         }
