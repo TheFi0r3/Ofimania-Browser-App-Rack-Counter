@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\ini\Server.ini" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.SessionStorage" Version="2.3.0" />
   </ItemGroup>
 

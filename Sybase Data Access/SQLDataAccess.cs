@@ -35,7 +35,7 @@ namespace Sybase_Data_Access
 
             try
             {
-                StreamReader sr = new StreamReader("ini\\Server.ini"); //Pass the file path and file name to the StreamReader constructor
+                StreamReader sr = new StreamReader("wwwroot\\ini\\Server.ini"); //Pass the file path and file name to the StreamReader constructor
                                       //Read the first line of text
                 line = sr.ReadLine(); //[database]
                 line = sr.ReadLine(); //DBMS = "SYC Adaptive Server Enterprise"
