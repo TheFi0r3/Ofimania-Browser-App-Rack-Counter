@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using AdoNetCore.AseClient;
 
-
 namespace Sybase_Data_Access
 {
     public class SQLDataAccess : ISQLDataAccess
@@ -19,7 +18,7 @@ namespace Sybase_Data_Access
 
         public string ConnectionString { get; set; }
 
-        public SqlConnection Connection { get; set; }
+        public AseConnection Connection { get; set; }
 
         // AseConnection
         // SqlConnection
@@ -53,7 +52,10 @@ namespace Sybase_Data_Access
                         }
 
                         line = line.Remove(0, 10);
-                        line = line.Trim(new Char[] { '"', '\\' });
+                        //line = line.Trim(new Char[] { '"', '\\' });
+                        string[] lines = line.Split(',');
+
+                        foreach(var lin in lines) { line = lin; }
 
                         sr.Close(); //close the file
 
@@ -76,8 +78,10 @@ namespace Sybase_Data_Access
 
         public async Task SetConnection(string user, string password,string server)
         {
-            await Task.FromResult(ConnectionString = "Data Source=DESKTOP-ANTONIO\\SQLEXPRESS; Initial Catalog=SisAdmin; User ID=" + user + "; Password =" + password+ "; TrustServerCertificate=true");
-//            await Task.FromResult(ConnectionString = "Data Source='" + server + "';Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
+//            await Task.FromResult(ConnectionString = "Data Source=DESKTOP-ANTONIO\\SQLEXPRESS; Initial Catalog=SisAdmin; User ID=" + user + "; Password =" + password+ "; TrustServerCertificate=true");
+//            await Task.FromResult(ConnectionString = "Data Source='" "';Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
+            await Task.FromResult(ConnectionString = "Network Address = " + server + ";Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
+
         }
 
         public async Task<bool> CheckConnection()
@@ -86,7 +90,7 @@ namespace Sybase_Data_Access
 
             try
             {
-                Connection = new SqlConnection(ConnectionString);
+                Connection = new AseConnection(ConnectionString);
                 Connection.Open();
                 Connection.Close();
             }
@@ -102,7 +106,7 @@ namespace Sybase_Data_Access
         {
             string connectionString = ConnectionString; //string connectionString = _config.GetConnectionString(ConnectionString);
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (IDbConnection connection = new AseConnection(connectionString))
             {
                 var data = await connection.QueryAsync<T>(sql, parameters);
 
@@ -114,7 +118,7 @@ namespace Sybase_Data_Access
         {
             string connectionString = ConnectionString; //string connectionString = _config.GetConnectionString(ConnectionString);
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (IDbConnection connection = new AseConnection(connectionString))
             {
                 await connection.ExecuteAsync(sql, parameters);
             }

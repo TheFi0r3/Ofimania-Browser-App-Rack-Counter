@@ -32,5 +32,9 @@ namespace Ofimania_Browser_App_Rack_Counter.Services
             return await Task.FromResult(RackStores);
         }
 
+        public async Task <RackStore> GetInventoryByCode(string storeCode)
+        {
+            return await Task.FromResult(RackStores.Where(RackStore => RackStore.StoreCode == storeCode).FirstOrDefault());
+        }
     }
 }

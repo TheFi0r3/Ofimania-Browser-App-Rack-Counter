@@ -13,6 +13,7 @@
 @inject ItemRackService RackService
 @inject ItemCountService CountService
 @inject LoginFormService LoginService
+@inject RackStoreService StoreService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime JSRuntime;
 
@@ -360,27 +361,29 @@ else
     {
         //foreach (var itemCount in itemsCount)
         //{   
-            //try { await UpdatetoDB(itemToUpdate); }//SEND TO DB
-            //catch (Exception) { await JSRuntime.InvokeVoidAsync("errorInvalidInput"); await ClearForm(); }
+        //try { await UpdatetoDB(itemToUpdate); }//SEND TO DB
+        //catch (Exception) { await JSRuntime.InvokeVoidAsync("errorInvalidInput"); await ClearForm(); }
         //}
         NavigationManager.NavigateTo("/administrador/almacen/" + @StoreId);
     }
 
     private async Task UpdatetoDB(ItemRack itemCount)
     {
+        var invCode = await StoreService.GetInventoryByCode(StoreId);
+
         if (itemCount.ItemInRack)
         {
-            await _dbrack.UpdateRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode);
+            await _dbrack.UpdateRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode, invCode.StoreStock.ToString());
         }
         else
         {
             try
             {
-                await _dbrack.InsertRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode, "0001", StoreId, UserName, itemCount.ItemBarCode);
+                await _dbrack.InsertRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode, invCode.StoreStock.ToString(), "0001", StoreId, UserName, itemCount.ItemBarCode);
             }
             catch (Exception)
             {
-                await _dbrack.UpdateRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode);
+                await _dbrack.UpdateRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode, invCode.StoreStock.ToString());
             }
         }
     }
