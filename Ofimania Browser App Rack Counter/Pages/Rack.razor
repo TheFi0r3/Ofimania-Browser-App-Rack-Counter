@@ -370,6 +370,7 @@ else
     private async Task UpdatetoDB(ItemRack itemCount)
     {
         var invCode = await StoreService.GetInventoryByCode(StoreId);
+        var sucCode = await _dbrack.GetRackSucursal();
 
         if (itemCount.ItemInRack)
         {
@@ -379,7 +380,7 @@ else
         {
             try
             {
-                await _dbrack.InsertRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode, invCode.StoreStock.ToString(), "0001", StoreId, UserName, itemCount.ItemBarCode);
+                await _dbrack.InsertRackMovil(CountNumb, itemCount.ItemNumb.ToString(), RackId, itemCount.ItemCode, invCode.StoreStock.ToString(), sucCode.First(), StoreId, UserName, itemCount.ItemBarCode);
             }
             catch (Exception)
             {

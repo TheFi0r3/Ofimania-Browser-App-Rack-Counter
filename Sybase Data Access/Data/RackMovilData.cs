@@ -64,6 +64,13 @@ namespace Sybase_Data_Access
             return _db.LoadData<int, dynamic>(sql, new { });
         }
 
+        public Task<List<string>> GetRackSucursal()
+        {
+            string sql = "select distinct CODSUCURSAL from dbo.RACKMOVIL";
+
+            return _db.LoadData<string, dynamic>(sql, new { });
+        }
+
         public Task UpdateRackMovil(string countNumb, string countProd, string rackCode, string prodCode, string invCode)
         {
             //CURRENT_TIMESTAMP

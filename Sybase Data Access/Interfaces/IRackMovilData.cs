@@ -18,6 +18,8 @@ namespace Sybase_Data_Access
 
         Task<List<int>> GetProductCount(string rackCode, string productCode, string countNumb);
 
+        Task<List<string>> GetRackSucursal();
+
         Task UpdateRackMovil(string countNumb, string countProd, string rackCode, string prodCode, string invCode);
 
         Task InsertRackMovil(string countNumb, string countProd, string rackCode, string prodCode, string invCode, string SucCode, string storeCode, string userName, string barCode);

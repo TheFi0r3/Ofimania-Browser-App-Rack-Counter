@@ -81,7 +81,6 @@ namespace Sybase_Data_Access
 //            await Task.FromResult(ConnectionString = "Data Source=DESKTOP-ANTONIO\\SQLEXPRESS; Initial Catalog=SisAdmin; User ID=" + user + "; Password =" + password+ "; TrustServerCertificate=true");
 //            await Task.FromResult(ConnectionString = "Data Source='" "';Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
             await Task.FromResult(ConnectionString = "Network Address = " + server + ";Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
-
         }
 
         public async Task<bool> CheckConnection()
