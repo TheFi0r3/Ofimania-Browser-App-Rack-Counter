@@ -117,21 +117,21 @@
 
         try 
         { 
-            rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "1", StoreId); 
+            rackMovil = await _dbrack.GetRackList(await LoginService.GetUserName(), "1", StoreId); 
             await StockService.LoadSQLRacks(rackMovil);
         } catch (Exception) { }
         rackStocks1 = await StockService.GetRackStocks();
 
         try
         { 
-            rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "2", StoreId); 
+            rackMovil = await _dbrack.GetRackList(await LoginService.GetUserName(), "2", StoreId); 
             await StockService.LoadSQLRacks(rackMovil);
         } catch (Exception) { }
         rackStocks2 = await StockService.GetRackStocks();
 
         try 
         { 
-            rackMovil = await _dbrack.GetRackList(await LoginService.GetId(), "3", StoreId); 
+            rackMovil = await _dbrack.GetRackList(await LoginService.GetUserName(), "3", StoreId); 
             await StockService.LoadSQLRacks(rackMovil);
         }
         catch (Exception) { }

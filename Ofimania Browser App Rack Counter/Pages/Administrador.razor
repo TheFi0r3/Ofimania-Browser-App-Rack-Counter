@@ -8,6 +8,7 @@
 
 @inject NavigationManager NavigationManager
 @inject RackStoreService StoreService
+@inject LoginFormService LoginService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IEnc_InventarioData _dbstore
 @inject IAlmacenData _dbname
@@ -16,7 +17,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Menú Principal!</p>
+        <p>¡Bienvenido <b>@context.User.Identity.Name</b>, al Servidor <b>@ServerName</b>!</p>
         <h4 h4 style="font-weight:lighter; color:black">Seleccione un Almacén para empezar a catalogar:</h4>
         <br />
         
@@ -49,6 +50,7 @@
     [Parameter]
 
     public string UserName { get; set; }
+    public string ServerName{ get; set; }
 
     public RackStock rackStock { get; set; }
 
@@ -64,6 +66,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        ServerName = await LoginService.GetServerName();
+
         try
         {
             rackAlmacen = await _dbstore.GetInventoryList("A");

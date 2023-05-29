@@ -55,7 +55,12 @@ else if (rackNotEmpty & rackNotCounted)
                         <br />-->
                         <div class="col-12 row">
                             <label class="col-12 font-weight-bold" style="text-align:left">Código de Barra</label>
-                            <InputText id="ItmName" class="form-control col-5" @onkeypress="@Tab" @bind-Value="itemCount.ItemBarCode" placeholder="Código de Barra" />
+                            <InputText id="ItemBarCode" class="form-control col-5" @onkeypress="@Tab" @bind-Value="itemCount.ItemBarCode" placeholder="Código de Barra" />
+                        </div>
+                        <br />
+                        <div class="col-12 row">
+                            <label class="col-12 font-weight-bold" style="text-align:left">Nombre de Producto</label>
+                            <InputText class="form-control col-5" @bind-Value="itemCount.ItemName" placeholder="Nombre de Producto" readonly />
                         </div>
                         <br />
                         <!--<div class="col-12 row">
@@ -64,8 +69,8 @@ else if (rackNotEmpty & rackNotCounted)
                         </div>
                         <br />-->
                         <div class="col-12 row">
-                            <label class="col-12 font-weight-bold" style="text-align:left">Número de Productos</label>
-                            <InputNumber id="ItmDescription" class="form-control col-5" @onkeypress="@Enter" @bind-Value="itemCount.ItemNumb" placeholder="Número de Productos" />
+                            <label class="col-12 font-weight-bold" style="text-align:left">Cantidad de Productos</label>
+                            <InputNumber id="ItemNumb" class="form-control col-5" @onkeypress="@Enter" @bind-Value="itemCount.ItemNumb" placeholder="Cantidad de Productos" />
                         </div>
                         <br />
                         <div class="col-10 row">
@@ -224,7 +229,13 @@ else
     public ItemRack itemCount { get; set; }
     public List<ItemRack> itemsCount { get; set; }
 
-    protected override void OnInitialized()
+    public class productDtoVM
+    {
+        public string ItemBarCode { get; set; }
+        public string ItemNumb { get; set; }
+    }
+
+    protected override void OnInitialized() //This function starts when the page is loaded
     {
         showHide = false;
         rackNotEmpty = false;
@@ -234,10 +245,10 @@ else
         itemCount = new ItemRack();
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync() //This function starts when the page is loaded
     {
         await NamingElements();
-        UserName = await LoginService.GetId();
+        UserName = await LoginService.GetUserName();
 
         try
         {
@@ -261,7 +272,7 @@ else
                 rackNotEmpty = true;
             }
 
-        }catch (Exception) { rackExists = false; }
+        } catch (Exception) { rackExists = false; }
 
         itemsRack = await RackService.GetItemsRack();
         itemsCount = await CountService.GetItemsRack();
@@ -269,7 +280,8 @@ else
 
     private async Task NamingElements()
     {
-        try {
+        try 
+        {
             var rackLocation = await _dblocat.GetLocationCodes(RackId);
             var storeNames = await _dbstore.GetStoreName(rackLocation.First().CODALMACEN);
             var seccionNames = await _dbsecc.GetSeccionName(rackLocation.First().SECCION);
@@ -278,14 +290,8 @@ else
             StoreName = storeNames.First().DESC_ALMACEN;
             SeccionName = seccionNames.First().DESSEC;
             AsileName = asileNames.First().DESCRIPCION;
-        } catch (Exception) { rackExists = false; }
-    }
 
-    public class productDtoVM
-    {
-        public string ItmNo { get; set; }
-        public string ItmName { get; set; }
-        public string ItmDescription { get; set; }
+        } catch (Exception) { rackExists = false; }
     }
 
     public async Task Enter(KeyboardEventArgs e)
@@ -293,6 +299,7 @@ else
         if (e.Key == "Enter")// Covers: Enter + NumPad Enter + Mobile keyboard Go to(enter)
         {
             await SubmitItem();
+            await JSRuntime.InvokeVoidAsync("onFocus", "ItemBarCode");
         }
     }
 
@@ -300,7 +307,36 @@ else
     {
         if (e.Key == "Enter")// Covers: Enter + NumPad Enter + Mobile keyboard Go to(enter)
         {
-            JSRuntime.InvokeVoidAsync("onFocus", "ItmNo");
+            await JSRuntime.InvokeVoidAsync("onFocus", "ItemNumb");
+            await JSRuntime.InvokeVoidAsync("onFocus", "ItemNumb");
+            await TestItem();
+        }
+    }
+
+    private async Task TestItem()
+    {
+        if (itemCount.ItemName != null)
+        {
+            var itemBarCode = itemCount.ItemBarCode;
+            itemCount = new ItemRack();
+            itemCount.ItemBarCode = itemBarCode;
+        }
+        
+        var prodcode = await _dbref.GetProdCode(itemCount.ItemBarCode);
+
+        if (itemCount.ItemCode == null & prodcode != null & itemCount.ItemBarCode != null)
+            try { itemCount.ItemCode = prodcode.First().CODPROD; }
+            catch (Exception) { await JSRuntime.InvokeVoidAsync("errorBarCode"); }
+
+        try
+        {
+            var rackProductData = await _dbprod.GetProductInfo(itemCount.ItemCode);
+
+            itemCount.ItemName = rackProductData.First().DESPROD;
+        }
+        catch (Exception)
+        {
+            await ClearForm();
         }
     }
 
@@ -312,16 +348,16 @@ else
             try {itemCount.ItemCode = prodcode.First().CODPROD;}
             catch (Exception) { await JSRuntime.InvokeVoidAsync("errorBarCode"); }
 
-        try
-        {// DB Connection
+        try 
+        {   
             var rackProductData = await _dbprod.GetProductInfo(itemCount.ItemCode);
-            var rackProductList = await _dbrack.GetProductList(RackId, await LoginService.GetId(), CountNumb);
+            var rackProductList = await _dbrack.GetProductList(RackId, await LoginService.GetUserName(), CountNumb);
 
             var opstate = await CountService.SaveItemRack(itemCount, rackProductData, rackProductList);
 
             if (!opstate) await JSRuntime.InvokeVoidAsync("errorNoProduct");
-
-        }catch(Exception)
+        } 
+        catch (Exception)
         {
             await ClearForm();
             await JSRuntime.InvokeVoidAsync("errorInvalidInput");
@@ -367,7 +403,7 @@ else
         NavigationManager.NavigateTo("/administrador/almacen/" + @StoreId);
     }
 
-    private async Task UpdatetoDB(ItemRack itemCount)
+    private async Task UpdatetoDB(ItemRack itemCount) // DB Connection
     {
         var invCode = await StoreService.GetInventoryByCode(StoreId);
         var sucCode = await _dbrack.GetRackSucursal();

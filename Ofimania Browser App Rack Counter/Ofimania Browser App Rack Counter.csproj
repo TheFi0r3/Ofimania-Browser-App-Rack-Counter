@@ -8,16 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Data\.old\WeatherForecast.cs" />
-    <Compile Include="Data\.old\WeatherForecastService.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Pages\.old\Counter.razor" />
-    <Content Include="Pages\.old\FetchData.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\ini\Server.ini" />
   </ItemGroup>
 

@@ -17,23 +17,19 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddHttpContextAccessor();
 
-//Singleton Services
-//builder.Services.AddSingleton<WeatherForecastService>();
+//Scoped Services
 builder.Services.AddScoped<LoginFormService>();
 builder.Services.AddScoped<HttpClient>();
+builder.Services.AddScoped<RackStockService>();
+builder.Services.AddScoped<RackStoreService>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 //Transient Services
 builder.Services.AddTransient<ItemRackService>();
 builder.Services.AddTransient<ItemCountService>();
 
-//Scoped Services
-builder.Services.AddScoped<RackStockService>();
-builder.Services.AddScoped<RackStoreService>();
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-
 //API Services
 builder.Services.AddSingleton<ISQLDataAccess, SQLDataAccess>();
-
 builder.Services.AddScoped<IRackMovilData, RackMovilData>();
 builder.Services.AddScoped<IProductoData, ProductoData>();
 builder.Services.AddScoped<IEnc_InventarioData, Enc_InventarioData>();

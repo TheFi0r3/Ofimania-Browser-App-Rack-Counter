@@ -58,10 +58,10 @@
     private async Task<bool> LoginSybase()
     {
         var server = await SybaseAccess.SetServerAddress();
-        await SybaseAccess.SetConnection(loginForm.UserId, loginForm.UserPassword, server);
+        await SybaseAccess.SetConnection(loginForm.UserId, loginForm.UserPassword, await SybaseAccess.GetServerAddress(server));
         if (await SybaseAccess.CheckConnection())
         {
-            await LoginForm.SetId(loginForm.UserId, loginForm.UserPassword);
+            await LoginForm.SetId(loginForm.UserId, loginForm.UserPassword, await SybaseAccess.GetServerName(server));
             ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedIn(loginForm.UserId);
             NavigationManager.NavigateTo("/administrador");
             await SessionStorage.SetItemAsync("UserId", loginForm.UserId);
@@ -76,9 +76,7 @@
 
     private async Task<bool> FailedLogin()
     {
-
 //        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).GetAuthenticationStateAsync();
-
         NavigationManager.NavigateTo("/loginerror");
 
         return await Task.FromResult(false);

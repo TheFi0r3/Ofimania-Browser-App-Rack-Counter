@@ -17,13 +17,16 @@ namespace Ofimania_Browser_App_Rack_Counter.Data
         [Required(ErrorMessage = "Se requiere Contraseña")]
         public string UserPassword { get; set; }
 
+        public string ServerName { get; set; }
+
         public LoginForm() { }
 
-        public LoginForm( string userId, string userPassword) 
+        public LoginForm( string userId, string userPassword, string serverName) 
         {
             UserId = userId;
             UserName = userId;
             UserPassword = userPassword;
+            ServerName = serverName;
         }
     }
 }

@@ -27,7 +27,26 @@ namespace Sybase_Data_Access
         {
             _config = config;
         }
+        public async Task<string> GetServerName(string server)
+        {
+            string[] serverName = server.Split(',');
 
+            foreach(var name in serverName) { server = name; break; }
+
+            server = server.Trim(new Char[] { '"', '\\' });
+
+            return await Task.FromResult(server);
+
+        }
+        public async Task<string> GetServerAddress(string server)
+        {
+            string[] serverName = server.Split(',');
+
+            foreach (var name in serverName) { server = name; }
+
+            return await Task.FromResult(server);
+
+        }
         public async Task<string> SetServerAddress()
         {
             string line;
@@ -53,9 +72,9 @@ namespace Sybase_Data_Access
 
                         line = line.Remove(0, 10);
                         //line = line.Trim(new Char[] { '"', '\\' });
-                        string[] lines = line.Split(',');
+                        //string[] lines = line.Split(',');
 
-                        foreach(var lin in lines) { line = lin; }
+                        //foreach(var lin in lines) { line = lin; }
 
                         sr.Close(); //close the file
 
@@ -78,8 +97,8 @@ namespace Sybase_Data_Access
 
         public async Task SetConnection(string user, string password,string server)
         {
-//            await Task.FromResult(ConnectionString = "Data Source=DESKTOP-ANTONIO\\SQLEXPRESS; Initial Catalog=SisAdmin; User ID=" + user + "; Password =" + password+ "; TrustServerCertificate=true");
-//            await Task.FromResult(ConnectionString = "Data Source='" "';Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
+//          await Task.FromResult(ConnectionString = "Data Source=DESKTOP-ANTONIO\\SQLEXPRESS; Initial Catalog=SisAdmin; User ID=" + user + "; Password =" + password+ "; TrustServerCertificate=true");
+//          await Task.FromResult(ConnectionString = "Data Source='" "';Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
             await Task.FromResult(ConnectionString = "Network Address = " + server + ";Port=5000;Database='SisAdmin';UID='" + user + "';PWD='" + password + "';Charset=iso_1");
         }
 
